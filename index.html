@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- [수정 1] 타이틀 변경 -->
     <title>이재룡 ♡ 문지혜 결혼식에 초대합니다</title>
     
     <!-- 폰트 -->
@@ -18,6 +17,9 @@
             --accent-color: #d4a373; /* 베이지 골드 */
             --point-color: #e67e22;
             --bg-soft: #f9f9f9;
+            --naver-color: #03c75a;
+            --kakao-color: #fae100;
+            --tmap-color: #000000; /* 티맵은 로고색이나 검정/빨강 등 사용 */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -39,7 +41,7 @@
             background: #fff;
             box-shadow: 0 0 20px rgba(0,0,0,0.03);
             position: relative;
-            padding-bottom: 120px;
+            padding-bottom: 100px;
             min-height: 100vh;
         }
 
@@ -87,15 +89,37 @@
             margin: 15px 0 30px; color: #111;
         }
 
-        /* --- [2. 초대 문구] --- */
+        /* --- [2. 초대 문구 (디자인 개선)] --- */
         .invitation-text {
             font-size: 0.95rem; color: #444; margin-bottom: 50px;
             font-weight: 300; line-height: 2.4;
         }
-        .bible-verse { margin-bottom: 30px; color: #666; font-style: italic; }
+        
+        /* [개선] 성경 구절 박스 디자인 */
+        .bible-box {
+            background-color: #fbf7f2; /* 연한 베이지 배경 */
+            padding: 30px 20px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .bible-box::before {
+            content: '❝';
+            font-family: serif;
+            position: absolute;
+            top: 10px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--accent-color);
+            opacity: 0.5;
+        }
+        .bible-verse {
+            margin-top: 15px;
+            color: #555; font-style: italic; font-size: 0.95rem;
+        }
         .bible-verse span {
             display: block; margin-top: 10px;
-            font-size: 0.85rem; color: var(--accent-color); font-style: normal;
+            font-size: 0.8rem; color: var(--accent-color); font-style: normal; font-weight: 500;
         }
 
         .parents-area { background-color: #fafafa; padding: 30px 20px; border-radius: 8px; }
@@ -125,6 +149,8 @@
             color: #888; font-weight: 300; position: relative;
         }
         .calendar-table .sunday { color: #e07a5f; }
+        /* 토요일 파란색 처리 (선택사항이나 관습적으로 좋음) */
+        .calendar-table td:last-child { color: #6688cc; } 
         
         .d-day-cell {
             color: #fff !important; font-weight: 600; z-index: 1;
@@ -132,7 +158,7 @@
         .d-day-cell::before {
             content: ''; position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 30px; height: 30px; /* 원 크기 */
+            width: 30px; height: 30px;
             background-color: var(--accent-color);
             border-radius: 50%; z-index: -1;
         }
@@ -167,6 +193,25 @@
         }
         .root_daum_roughmap { width: 100% !important; max-width: 100% !important; }
 
+        /* [개선] 지도 앱 버튼 그룹 */
+        .map-btn-group {
+            display: flex; gap: 8px; margin-top: 15px;
+        }
+        .map-app-btn {
+            flex: 1; padding: 10px 0; border-radius: 6px;
+            text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid #eee;
+        }
+        .btn-naver { background: #fff; color: #333; border-color: #ddd; }
+        .btn-naver::before { content:'N'; display:inline-block; margin-right:5px; color:var(--naver-color); font-weight:900; }
+        
+        .btn-kakao { background: #fae100; color: #3c1e1e; border: none; }
+        .btn-kakao::before { content:'K'; display:inline-block; margin-right:5px; font-weight:900; }
+        
+        .btn-tmap { background: #fff; color: #333; border-color: #ddd; }
+        .btn-tmap::before { content:'T'; display:inline-block; margin-right:5px; color:var(--tmap-color); font-weight:900; }
+
         .location-info {
             text-align: left; padding: 25px 10px;
             background: #fff; font-size: 0.95rem; line-height: 1.8;
@@ -177,6 +222,20 @@
             color: var(--accent-color); font-weight: 700; vertical-align: top;
         }
         .location-info span { display: inline-block; width: calc(100% - 65px); color: #444; }
+
+        /* [개선] 지하철 호선 색상 */
+        .subway-line-2 {
+            display: inline-block;
+            background-color: #3cb44a; /* 2호선 녹색 */
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 0 6px;
+            border-radius: 10px;
+            margin-right: 4px;
+            vertical-align: middle;
+            line-height: 1.5;
+            font-weight: bold;
+        }
 
         /* --- [6. 계좌번호] --- */
         .account-box { margin-bottom: 12px; border: 1px solid #eee; border-radius: 8px; overflow: hidden; transition: all 0.3s; }
@@ -205,11 +264,29 @@
         .bank-name { font-weight: 500; color: #333; font-size: 0.95rem; font-family: 'Noto Sans KR', sans-serif; }
         .bank-num { font-size: 0.9rem; color: #666; letter-spacing: 0; font-family: 'Noto Sans KR', sans-serif; }
         
+        /* [개선] 복사 버튼 피드백 스타일 */
         .btn-copy {
             background: #fff; border: 1px solid #ccc;
-            padding: 0; width: 50px; height: 32px;
+            padding: 0; width: 60px; height: 32px; /* 너비 살짝 증가 */
             font-size: 0.8rem; color: #555; border-radius: 4px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .btn-copy.copied {
+            background: #333; color: #fff; border-color: #333;
+        }
+
+        /* --- [7. Footer (엔딩 섹션)] --- */
+        .footer-section {
+            padding: 50px 20px 30px;
+            background-color: #f9f9f9;
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
+        }
+        .footer-msg {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1rem; color: #555; margin-bottom: 20px;
         }
 
         /* --- [토스트/하단바/모달/팝업 등 공통] --- */
@@ -242,7 +319,6 @@
             font-size: 1.2rem; color: var(--accent-color);
             z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;
         }
-        /* 재생 중일 때 회전 효과 */
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         .bgm-toggle.playing { animation: pulse 2s infinite; color: var(--point-color); }
 
@@ -277,6 +353,22 @@
             cursor: pointer; z-index: 10001; padding: 20px; user-select: none;
         }
         .modal-prev { left: 0; } .modal-next { right: 0; }
+
+        /* [개선] 스와이프 가이드 애니메이션 */
+        .swipe-guide {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 10005; pointer-events: none; /* 클릭 통과 */
+            color: #fff; font-size: 1.2rem; text-align: center;
+            opacity: 0; animation: swipeHint 2.5s ease-in-out;
+        }
+        .swipe-guide .hand-icon { font-size: 3rem; display: block; margin-bottom: 10px; }
+        @keyframes swipeHint {
+            0% { opacity: 0; transform: translate(-50%, -50%) translateX(0); }
+            20% { opacity: 1; }
+            50% { transform: translate(-50%, -50%) translateX(-30px); }
+            80% { transform: translate(-50%, -50%) translateX(30px); opacity: 1; }
+            100% { opacity: 0; }
+        }
 
         .popup-overlay {
             display: none; position: fixed; z-index: 9990; left: 0; top: 0;
@@ -333,14 +425,17 @@
         <div style="font-size: 1rem; color:#666;">서울 중부교회</div>
     </section>
 
-    <!-- 2. 초대 문구 -->
+    <!-- 2. 초대 문구 (성경구절 디자인 개선) -->
     <section class="fade-in-section">
         <div class="section-title">INVITATION</div>
         <div class="invitation-text">
-            <div class="bible-verse">
-                "나는 나의 사랑하는 자에게 속하였구나<br>
-                그가 나를 사모하는구나"
-                <span>(아가 7:10)</span>
+            <!-- [개선] 성경구절 박스 -->
+            <div class="bible-box">
+                <div class="bible-verse">
+                    "나는 나의 사랑하는 자에게 속하였구나<br>
+                    그가 나를 사모하는구나"
+                    <span>(아가 7:10)</span>
+                </div>
             </div>
             <br>
             하나님의 은혜로 만난 두 사람이<br>
@@ -417,16 +512,22 @@
             <div id="daumRoughmapContainer1763972596126" class="root_daum_roughmap root_daum_roughmap_landing"></div>
         </div>
         
+        <!-- [개선] 지도 앱 버튼 그룹 -->
+        <div class="map-btn-group">
+            <a href="https://map.naver.com/p/search/서울 중부교회" target="_blank" class="map-app-btn btn-naver">네이버 지도</a>
+            <a href="https://map.kakao.com/link/search/서울 중부교회" target="_blank" class="map-app-btn btn-kakao">카카오맵</a>
+            <a href="https://surl.tmap.co.kr/92289352" onclick="alert('티맵이 설치되어 있어야 연결됩니다.')" class="map-app-btn btn-tmap">티맵</a>
+        </div>
+
         <div class="location-info">
             <div>
                 <strong>지하철</strong> 
-                <!-- [수정 2] 지하철 문구 변경 -->
-                <span>2호선 상왕십리역 (2번 출구 도보 3분)</span>
+                <!-- [개선] 2호선 뱃지 -->
+                <span><span class="subway-line-2">2호선</span>상왕십리역 (2번 출구 도보 3분)</span>
             </div>
             <div style="margin-top:12px;">
                 <strong>주차</strong>
-                <!-- [수정 3] 주차 문구 및 폰트 사이즈 조정 -->
-                <span>교회당 지하 주차장<br><span style="font-size: 0.8rem; letter-spacing: -0.5px;">(만차시 도선어린이공원 공영주차장 이용)</span></span>
+                <span>교회당 지하 주차장<br><span style="font-size: 0.8rem; letter-spacing: -0.5px;">(만차시 도선어린이공원 공영주차장 이용 부탁드립니다)</span></span>
             </div>
         </div>
     </section>
@@ -446,7 +547,7 @@
                         <span class="bank-name">KEB하나 (이재룡)</span>
                         <span class="bank-num">178-910357-82007</span>
                     </div>
-                    <button class="btn-copy" onclick="copy('178-910357-82007')">복사</button>
+                    <button class="btn-copy" onclick="copy(this, '178-910357-82007')">복사</button>
                 </div>
             </div>
         </div>
@@ -462,11 +563,22 @@
                         <span class="bank-name">신협 (문지혜)</span>
                         <span class="bank-num">010-2938-2104</span>
                     </div>
-                    <button class="btn-copy" onclick="copy('010-2938-2104')">복사</button>
+                    <button class="btn-copy" onclick="copy(this, '010-2938-2104')">복사</button>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- [개선] 7. Footer -->
+    <footer class="footer-section">
+        <div class="footer-msg">
+            저희 두 사람, 예쁘게 잘 살겠습니다.<br>
+            감사합니다.
+        </div>
+        <div style="font-size:0.75rem; color:#bbb;">
+            Copyright 2026. Jaeryong & Jihye. All rights reserved.
+        </div>
+    </footer>
 
 </div>
 
@@ -503,6 +615,13 @@
     <span class="close-img-modal" onclick="closeImgModal()">&times;</span>
     <div class="modal-nav-btn modal-prev" onclick="moveSlide(-1)">&#10094;</div>
     <div class="modal-nav-btn modal-next" onclick="moveSlide(1)">&#10095;</div>
+    
+    <!-- [개선] 스와이프 안내 가이드 -->
+    <div id="swipeGuide" class="swipe-guide">
+        <span class="hand-icon">👆</span>
+        좌우로 넘겨보세요
+    </div>
+
     <div class="modal-slider-box" id="modalSliderBox"></div>
 </div>
 
@@ -530,10 +649,10 @@
         isPlaying = play;
         if (play) {
             bgmToggle.classList.add('playing');
-            bgmIcon.innerText = '🔊'; // 재생 아이콘
+            bgmIcon.innerText = '🔊';
         } else {
             bgmToggle.classList.remove('playing');
-            bgmIcon.innerText = '🔇'; // 음소거 아이콘
+            bgmIcon.innerText = '🔇';
         }
     }
 
@@ -555,19 +674,33 @@
         document.getElementById(id).classList.toggle('open');
     }
 
-    // --- 복사 & 토스트 ---
-    function copy(text) {
+    // --- [개선] 복사 & 피드백 ---
+    function copy(btnElement, text) {
         navigator.clipboard.writeText(text).then(() => {
+            showCopyFeedback(btnElement);
             showToast();
         }).catch(() => {
+            // Fallback
             const textArea = document.createElement("textarea");
             textArea.value = text;
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand("Copy");
             textArea.remove();
+            showCopyFeedback(btnElement);
             showToast();
         });
+    }
+
+    function showCopyFeedback(btn) {
+        const originalText = btn.innerText;
+        btn.innerText = "복사됨 ✔";
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.classList.remove('copied');
+        }, 2000);
     }
 
     function showToast() {
@@ -587,8 +720,9 @@
     
     // --- 공유 ---
     function copyLinkForKakao() {
-        copy(window.location.href);
-        alert("링크가 복사되었습니다. 카카오톡에 붙여넣어 주세요.");
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            alert("링크가 복사되었습니다. 카카오톡에 붙여넣어 주세요.");
+        });
     }
     function sendSMS() {
         const url = window.location.href;
@@ -656,6 +790,14 @@
     function openImgModal(index) {
         initGallerySlider();
         modal.style.display = "block";
+        
+        // [개선] 스와이프 안내 표시 (매번 열릴 때마다 잠깐 보여줌)
+        const guide = document.getElementById('swipeGuide');
+        guide.style.display = 'block';
+        guide.style.animation = 'none';
+        void guide.offsetWidth; // trigger reflow
+        guide.style.animation = 'swipeHint 2.5s ease-in-out forwards';
+
         setTimeout(() => {
             const width = sliderBox.clientWidth;
             sliderBox.scrollTo({ left: width * index, behavior: 'auto' });
@@ -668,4 +810,3 @@
 </script>
 </body>
 </html>
-
