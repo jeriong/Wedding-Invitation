@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이재룡 & 문지혜의 결혼식</title>
     
-    <!-- 폰트: 나눔명조 & Noto Serif KR (우아한 분위기) -->
+    <!-- 폰트: Noto Serif KR (우아한 분위기) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -22,11 +22,11 @@
 
         body {
             font-family: 'Noto Serif KR', serif;
-            background-color: #f0f0f0; /* 배경은 회색톤으로 컨텐츠 강조 */
+            background-color: #f0f0f0;
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            line-height: 2.2; /* 줄간격 넓게 */
+            line-height: 2.2;
             text-align: center;
             word-break: keep-all;
             overflow-x: hidden;
@@ -39,7 +39,7 @@
             background: #fff;
             box-shadow: 0 0 20px rgba(0,0,0,0.03);
             position: relative;
-            padding-bottom: 100px; /* 하단 여백 */
+            padding-bottom: 100px;
             min-height: 100vh;
         }
 
@@ -48,12 +48,6 @@
             position: relative;
         }
 
-        /* 구분선 대신 여백으로 구분 */
-        .divider-space {
-            height: 40px;
-        }
-
-        /* --- [타이포그래피] --- */
         h1, h2, h3, p { margin: 0; }
         
         .eng-title {
@@ -74,18 +68,8 @@
             position: relative;
             display: inline-block;
         }
-        
-        /* 제목 양옆 장식 (선택사항) */
-        /* .section-title::after {
-            content: '';
-            display: block;
-            width: 30px;
-            height: 1px;
-            background: #eee;
-            margin: 10px auto 0;
-        } */
 
-        /* --- [스크롤 애니메이션 (Fade In)] --- */
+        /* --- [스크롤 애니메이션] --- */
         .fade-in-section {
             opacity: 0;
             transform: translateY(30px);
@@ -107,14 +91,12 @@
             width: 100%;
             overflow: hidden;
             margin: 30px 0;
-            /* 사진 테두리 장식 */
             padding: 10px; 
             border: 1px solid #eee; 
         }
         .main-photo {
             width: 100%;
             display: block;
-            /* 필터 효과: 살짝 따뜻하게 */
             filter: contrast(0.95) brightness(1.02); 
         }
         .wedding-date-main {
@@ -142,7 +124,7 @@
             color: #666;
             margin-top: 40px;
             padding: 30px 0;
-            background-color: #fdfdfd; /* 아주 연한 배경 */
+            background-color: #fdfdfd;
             border-top: 1px solid #f5f5f5;
             border-bottom: 1px solid #f5f5f5;
         }
@@ -156,10 +138,8 @@
             margin-left: 5px;
         }
 
-        /* --- [3. 달력 디자인 (Minimal)] --- */
-        .calendar-wrap {
-            padding: 0 15px;
-        }
+        /* --- [3. 달력] --- */
+        .calendar-wrap { padding: 0 15px; }
         .calendar-table {
             width: 100%;
             border-collapse: collapse;
@@ -180,7 +160,6 @@
         }
         .calendar-table .sunday { color: #e07a5f; }
         
-        /* 디데이 하트 */
         .d-day-cell {
             position: relative;
             color: #fff !important;
@@ -197,7 +176,6 @@
             z-index: -1;
             opacity: 0.8;
         }
-
         .d-day-counter {
             margin-top: 40px;
             font-size: 1rem;
@@ -220,20 +198,17 @@
             aspect-ratio: 1/1;
             object-fit: cover;
             display: block;
-            transition: transform 0.3s;
         }
 
-        /* --- [5. 오시는 길 (지도)] --- */
+        /* --- [5. 오시는 길] --- */
         .map-wrapper {
             width: 100%;
             margin: 20px 0;
             border: 1px solid #eee;
             background: #fafafa;
-            /* 카카오 약도 컨테이너 높이 강제 지정 */
             height: 300px; 
             overflow: hidden;
         }
-        /* 카카오 지도 컨테이너 강제 스타일링 */
         .root_daum_roughmap {
             width: 100% !important;
             max-width: 100% !important;
@@ -251,6 +226,11 @@
             width: 60px;
             color: var(--accent-color);
             font-weight: 500;
+            vertical-align: top;
+        }
+        .location-info span {
+            display: inline-block;
+            width: calc(100% - 65px);
         }
 
         /* --- [6. 계좌번호] --- */
@@ -314,14 +294,12 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .nav-item:active { background: #f5f5f5; }
         .nav-item.highlight {
             background: #333;
             color: #fff;
         }
 
-        /* --- [기타 요소] --- */
-        /* BGM & 꽃잎 */
+        /* --- [BGM & 꽃잎] --- */
         .bgm-toggle {
             position: absolute;
             top: 20px; right: 20px;
@@ -356,10 +334,11 @@
 
 <div class="container">
     
-    <!-- BGM 컨트롤 -->
+    <!-- BGM 컨트롤: 실제 파일을 업로드해야 작동합니다 -->
     <div class="bgm-toggle" onclick="toggleAudio()">♪</div>
     <audio id="bgm" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <!-- [중요] GitHub에 bgm.mp3 파일을 업로드하세요 -->
+        <source src="bgm.mp3" type="audio/mpeg">
     </audio>
 
     <!-- 1. 메인 커버 -->
@@ -368,8 +347,8 @@
         <div class="wedding-names-main">이재룡 <span style="font-size:0.6em; color:#ccc; vertical-align:middle; margin:0 5px;">&</span> 문지혜</div>
         
         <div class="main-photo-frame">
-            <!-- 첫 번째 사진 -->
-            <img src="temp_1759293992337.92289352.jpeg" alt="Main Photo" class="main-photo">
+            <!-- [중요] GitHub에 main.jpg 파일을 업로드하세요 -->
+            <img src="main.jpg" alt="Main Photo" class="main-photo" onerror="this.style.background='#eee';this.src='https://via.placeholder.com/400x500?text=main.jpg';">
         </div>
 
         <div class="wedding-date-main">2026. 02. 07 SAT PM 12:30</div>
@@ -430,10 +409,11 @@
     <section class="fade-in-section" style="padding-left:10px; padding-right:10px;">
         <div class="section-title">GALLERY</div>
         <div class="gallery-grid">
-            <img src="20251112_134047.jpg" class="gallery-img">
-            <img src="20251112_120445.jpg" class="gallery-img">
-            <img src="20251112_121513.jpg" class="gallery-img">
-            <img src="20250703_201832.jpg" class="gallery-img">
+            <!-- [중요] GitHub에 gallery1.jpg, gallery2.jpg... 업로드 필요 -->
+            <img src="gallery1.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=gallery1.jpg'">
+            <img src="gallery2.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=gallery2.jpg'">
+            <img src="gallery3.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=gallery3.jpg'">
+            <img src="gallery4.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=gallery4.jpg'">
         </div>
     </section>
 
@@ -445,19 +425,10 @@
         
         <!-- 지도 영역 -->
         <div class="map-wrapper">
-            <!-- 
-                [지도 수정] 
-                Lander 생성 시점 문제를 해결하기 위해 로딩 대기 로직을 추가했습니다.
-            -->
             <div id="daumRoughmapContainer1763972596126" class="root_daum_roughmap root_daum_roughmap_landing"></div>
-            
-            <!-- 로더 스크립트 -->
             <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
-            
-            <!-- 실행 스크립트 (안전한 실행을 위한 재귀 호출 추가) -->
             <script charset="UTF-8">
                 function initMap() {
-                    // daum.roughmap.Lander가 로드되었는지 확인
                     if (typeof daum !== 'undefined' && daum.roughmap && daum.roughmap.Lander) {
                         new daum.roughmap.Lander({
                             "timestamp" : "1763972596126",
@@ -466,7 +437,6 @@
                             "mapHeight" : "300"
                         }).render();
                     } else {
-                        // 아직 로드되지 않았다면 100ms 뒤에 다시 시도
                         setTimeout(initMap, 100);
                     }
                 }
@@ -475,8 +445,12 @@
         </div>
 
         <div class="location-info">
-            <div><strong>지하철</strong> 상왕십리역 2번 출구 (도보 3분)</div>
-            <div style="margin-top:5px;"><strong>주차</strong> 교회 주차장 이용 가능</div>
+            <div><strong>지하철</strong> <span>상왕십리역 2번 출구 (도보 3분)</span></div>
+            <div style="margin-top:8px;">
+                <strong>주차</strong>
+                <!-- [요청사항 반영] 주차 안내 텍스트 수정 -->
+                <span>교회당 지하 주차장<br>(만차시 인근 도선어린이공원 공영주차장 이용 부탁드립니다)</span>
+            </div>
         </div>
     </section>
 
@@ -520,53 +494,40 @@
 </div>
 
 <script>
-    /* --- 1. 스크롤 페이드인 효과 --- */
+    /* 1. 스크롤 페이드인 */
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('is-visible');
         });
     }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
 
-    document.querySelectorAll('.fade-in-section').forEach(section => {
-        observer.observe(section);
-    });
-
-    /* --- 2. 디데이 계산 --- */
+    /* 2. 디데이 */
     const dday = new Date("2026-02-07").getTime();
     const today = new Date().getTime();
     const gap = dday - today;
     const day = Math.ceil(gap / (1000 * 60 * 60 * 24));
     document.getElementById('d-day').innerText = day;
 
-    /* --- 3. 계좌 토글 --- */
+    /* 3. 토글 및 복사 */
     function toggleAcc(id) {
-        const el = document.getElementById(id);
-        const currentDisplay = window.getComputedStyle(el).display;
-        el.classList.toggle('open');
+        document.getElementById(id).classList.toggle('open');
     }
-
-    /* --- 4. 복사 기능 --- */
     function copy(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert("계좌번호가 복사되었습니다.");
-        });
+        navigator.clipboard.writeText(text).then(() => alert("계좌번호가 복사되었습니다."));
     }
-
-    /* --- 5. 공유 기능 --- */
     function share() {
         alert("링크를 복사해서 전달해주세요!");
     }
 
-    /* --- 6. BGM --- */
+    /* 4. BGM 컨트롤 */
     function toggleAudio() {
         const audio = document.getElementById('bgm');
         if(audio.paused) audio.play();
         else audio.pause();
     }
 
-    /* --- 7. 꽃잎 효과 --- */
+    /* 5. 꽃잎 효과 */
     function createPetal() {
         const petal = document.createElement('div');
         petal.classList.add('petal');
@@ -579,7 +540,6 @@
         setTimeout(() => petal.remove(), 7000);
     }
     setInterval(createPetal, 400);
-
 </script>
 
 </body>
