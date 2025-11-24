@@ -119,6 +119,21 @@
             margin-bottom: 40px;
             font-weight: 300;
         }
+        
+        /* 성경 구절 스타일 */
+        .bible-verse {
+            margin-bottom: 30px;
+            color: #444;
+            font-style: italic;
+        }
+        .bible-verse span {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-style: normal;
+        }
+
         .parents-area {
             font-size: 0.9rem;
             color: #666;
@@ -187,7 +202,7 @@
             font-size: 1.2rem;
         }
 
-        /* --- [4. 갤러리] --- */
+        /* --- [4. 갤러리 & 모달] --- */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -198,6 +213,46 @@
             aspect-ratio: 1/1;
             object-fit: cover;
             display: block;
+            cursor: pointer; /* 클릭 가능 표시 */
+            transition: opacity 0.2s;
+        }
+        .gallery-img:active {
+            opacity: 0.7;
+        }
+
+        /* 모달(팝업) 스타일 */
+        .modal {
+            display: none; /* 기본 숨김 */
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: hidden;
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            object-fit: contain;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
         }
 
         /* --- [5. 오시는 길] --- */
@@ -355,17 +410,24 @@
         <div style="font-size: 0.95rem; color:#888;">서울 중부교회</div>
     </section>
 
-    <!-- 2. 초대글 -->
+    <!-- 2. 초대글 (수정됨) -->
     <section class="fade-in-section">
         <div class="section-title">INVITATION</div>
         <div class="invitation-text">
-            사랑과 신뢰로 한 걸음 한 걸음<br>
-            서로의 인생에 다가선 두 사람이<br>
-            이제 하나가 되어<br>
-            새로운 시작을 하려 합니다.<br>
+            <!-- 성경 구절 인용 -->
+            <div class="bible-verse">
+                "나는 나의 사랑하는 자에게 속하였구나<br>
+                그가 나를 사모하는구나"
+                <span>(아가 7:10)</span>
+            </div>
+            
             <br>
-            귀한 걸음으로 오셔서<br>
-            저희의 앞날을 축복해 주시면<br>
+            하나님의 섭리 가운데 만난 두 사람이<br>
+            믿음과 사랑으로 하나 되어<br>
+            새로운 한 걸음을 내딛고자 합니다.<br>
+            <br>
+            주님 안에서 아름다운 가정을 이루도록<br>
+            이 자리에 함께 해주신다면<br>
             더없는 기쁨으로 간직하겠습니다.
         </div>
 
@@ -410,10 +472,11 @@
         <div class="section-title">GALLERY</div>
         <div class="gallery-grid">
             <!-- [중요] GitHub에 gallery1.jpg, gallery2.jpg... 업로드 필요 -->
-            <img src="gallery1.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=gallery1.jpg'">
-            <img src="gallery2.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=gallery2.jpg'">
-            <img src="gallery3.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=gallery3.jpg'">
-            <img src="gallery4.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=gallery4.jpg'">
+            <!-- 클릭 시 openModal() 함수 실행 -->
+            <img src="gallery1.jpg" class="gallery-img" onclick="openModal(this)" onerror="this.src='https://via.placeholder.com/300?text=gallery1.jpg'">
+            <img src="gallery2.jpg" class="gallery-img" onclick="openModal(this)" onerror="this.src='https://via.placeholder.com/300?text=gallery2.jpg'">
+            <img src="gallery3.jpg" class="gallery-img" onclick="openModal(this)" onerror="this.src='https://via.placeholder.com/300?text=gallery3.jpg'">
+            <img src="gallery4.jpg" class="gallery-img" onclick="openModal(this)" onerror="this.src='https://via.placeholder.com/300?text=gallery4.jpg'">
         </div>
     </section>
 
@@ -448,7 +511,6 @@
             <div><strong>지하철</strong> <span>상왕십리역 2번 출구 (도보 3분)</span></div>
             <div style="margin-top:8px;">
                 <strong>주차</strong>
-                <!-- [요청사항 반영] 주차 안내 텍스트 수정 -->
                 <span>교회당 지하 주차장<br>(만차시 인근 도선어린이공원 공영주차장 이용 부탁드립니다)</span>
             </div>
         </div>
@@ -463,10 +525,10 @@
                 신랑측 마음 전하실 곳 <span>▼</span>
             </div>
             <div id="acc1" class="account-body">
-                <div style="margin-bottom:5px;">국민 (예금주: 이재룡)</div>
+                <div style="margin-bottom:5px;">KEB하나 (예금주: 이재룡)</div>
                 <div style="display:flex; justify-content:space-between;">
-                    <b>123-456-7890</b>
-                    <button class="btn-copy" onclick="copy('123-456-7890')">복사</button>
+                    <b>178-910357-82007</b>
+                    <button class="btn-copy" onclick="copy('178-910357-82007')">복사</button>
                 </div>
             </div>
         </div>
@@ -476,10 +538,10 @@
                 신부측 마음 전하실 곳 <span>▼</span>
             </div>
             <div id="acc2" class="account-body">
-                <div style="margin-bottom:5px;">신한 (예금주: 문지혜)</div>
+                <div style="margin-bottom:5px;">신협 (예금주: 문지혜)</div>
                 <div style="display:flex; justify-content:space-between;">
-                    <b>110-222-333333</b>
-                    <button class="btn-copy" onclick="copy('110-222-333333')">복사</button>
+                    <b>010-2938-2104</b>
+                    <button class="btn-copy" onclick="copy('010-2938-2104')">복사</button>
                 </div>
             </div>
         </div>
@@ -491,6 +553,12 @@
 <div class="bottom-nav">
     <a href="tel:010-0000-0000" class="nav-item">📞 전화하기</a>
     <div class="nav-item highlight" onclick="share()">💌 공유하기</div>
+</div>
+
+<!-- 갤러리 이미지 모달 -->
+<div id="imgModal" class="modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImg">
 </div>
 
 <script>
@@ -540,6 +608,18 @@
         setTimeout(() => petal.remove(), 7000);
     }
     setInterval(createPetal, 400);
+
+    /* 6. 모달(이미지 확대) 기능 */
+    function openModal(element) {
+        const modal = document.getElementById("imgModal");
+        const modalImg = document.getElementById("modalImg");
+        modal.style.display = "block";
+        modalImg.src = element.src;
+    }
+
+    function closeModal() {
+        document.getElementById("imgModal").style.display = "none";
+    }
 </script>
 
 </body>
