@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이재룡 & 문지혜의 결혼식</title>
+    
+    <!-- 폰트: 나눔명조 & Noto Serif KR (우아한 분위기) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- [변수 및 기본 설정] --- */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #2c2c2c;
+            --sub-text-color: #666666;
+            --accent-color: #d4a373; /* 차분한 베이지 골드 */
+            --bg-soft: #f9f9f9;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background-color: #f0f0f0; /* 배경은 회색톤으로 컨텐츠 강조 */
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 2.2; /* 줄간격 넓게 */
+            text-align: center;
+            word-break: keep-all;
+            overflow-x: hidden;
+        }
+
+        /* --- [컨테이너] --- */
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.03);
+            position: relative;
+            padding-bottom: 100px; /* 하단 여백 */
+            min-height: 100vh;
+        }
+
+        section {
+            padding: 60px 25px;
+            position: relative;
+        }
+
+        /* 구분선 대신 여백으로 구분 */
+        .divider-space {
+            height: 40px;
+        }
+
+        /* --- [타이포그래피] --- */
+        h1, h2, h3, p { margin: 0; }
+        
+        .eng-title {
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin-bottom: 40px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* 제목 양옆 장식 (선택사항) */
+        /* .section-title::after {
+            content: '';
+            display: block;
+            width: 30px;
+            height: 1px;
+            background: #eee;
+            margin: 10px auto 0;
+        } */
+
+        /* --- [스크롤 애니메이션 (Fade In)] --- */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* --- [1. 메인 커버] --- */
+        .main-cover {
+            padding-top: 60px;
+            padding-bottom: 20px;
+        }
+        .main-photo-frame {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            margin: 30px 0;
+            /* 사진 테두리 장식 */
+            padding: 10px; 
+            border: 1px solid #eee; 
+        }
+        .main-photo {
+            width: 100%;
+            display: block;
+            /* 필터 효과: 살짝 따뜻하게 */
+            filter: contrast(0.95) brightness(1.02); 
+        }
+        .wedding-date-main {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #444;
+            letter-spacing: 1px;
+        }
+        .wedding-names-main {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 15px 0 30px;
+            color: #111;
+        }
+
+        /* --- [2. 초대 문구] --- */
+        .invitation-text {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        .parents-area {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 40px;
+            padding: 30px 0;
+            background-color: #fdfdfd; /* 아주 연한 배경 */
+            border-top: 1px solid #f5f5f5;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .parents-row {
+            margin: 8px 0;
+        }
+        .parents-row b {
+            color: #222;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-left: 5px;
+        }
+
+        /* --- [3. 달력 디자인 (Minimal)] --- */
+        .calendar-wrap {
+            padding: 0 15px;
+        }
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin: 20px auto;
+        }
+        .calendar-table th {
+            color: var(--accent-color);
+            font-weight: 400;
+            padding-bottom: 20px;
+            font-size: 0.8rem;
+        }
+        .calendar-table td {
+            height: 45px;
+            vertical-align: middle;
+            color: #888;
+            font-weight: 300;
+        }
+        .calendar-table .sunday { color: #e07a5f; }
+        
+        /* 디데이 하트 */
+        .d-day-cell {
+            position: relative;
+            color: #fff !important;
+            font-weight: 600;
+        }
+        .d-day-cell::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px; height: 32px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .d-day-counter {
+            margin-top: 40px;
+            font-size: 1rem;
+            color: #444;
+            letter-spacing: 1px;
+        }
+        .d-day-counter strong {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        /* --- [4. 갤러리] --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .gallery-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        /* --- [5. 오시는 길 (지도)] --- */
+        .map-wrapper {
+            width: 100%;
+            margin: 20px 0;
+            border: 1px solid #eee;
+            background: #fafafa;
+            /* 카카오 약도 컨테이너 높이 강제 지정 */
+            height: 300px; 
+            overflow: hidden;
+        }
+        /* 카카오 지도 컨테이너 강제 스타일링 */
+        .root_daum_roughmap {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .location-info {
+            text-align: left;
+            padding: 20px;
+            background: #fcfcfc;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+        .location-info strong {
+            display: inline-block;
+            width: 60px;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        /* --- [6. 계좌번호] --- */
+        .account-box {
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+        }
+        .account-header {
+            padding: 15px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #444;
+        }
+        .account-body {
+            display: none;
+            padding: 20px;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: left;
+        }
+        .account-body.open { display: block; }
+
+        .btn-copy {
+            float: right;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            color: #555;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* --- [하단 네비게이션] --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 450px;
+            height: 55px;
+            display: flex;
+            background: #fff;
+            border-top: 1px solid #eee;
+            z-index: 100;
+        }
+        .nav-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .nav-item:active { background: #f5f5f5; }
+        .nav-item.highlight {
+            background: #333;
+            color: #fff;
+        }
+
+        /* --- [기타 요소] --- */
+        /* BGM & 꽃잎 */
+        .bgm-toggle {
+            position: absolute;
+            top: 20px; right: 20px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.8);
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            z-index: 50;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        .petal {
+            position: fixed; top: -10px;
+            background: #ffd1dc;
+            border-radius: 50% 0 50% 50%;
+            z-index: 0;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translate(100px, 100vh) rotate(720deg); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- BGM 컨트롤 -->
+    <div class="bgm-toggle" onclick="toggleAudio()">♪</div>
+    <audio id="bgm" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 1. 메인 커버 -->
+    <section class="main-cover fade-in-section">
+        <div class="eng-title">Wedding Invitation</div>
+        <div class="wedding-names-main">이재룡 <span style="font-size:0.6em; color:#ccc; vertical-align:middle; margin:0 5px;">&</span> 문지혜</div>
+        
+        <div class="main-photo-frame">
+            <!-- 첫 번째 사진 -->
+            <img src="temp_1759293992337.92289352.jpeg" alt="Main Photo" class="main-photo">
+        </div>
+
+        <div class="wedding-date-main">2026. 02. 07 SAT PM 12:30</div>
+        <div style="font-size: 0.95rem; color:#888;">서울 중부교회</div>
+    </section>
+
+    <!-- 2. 초대글 -->
+    <section class="fade-in-section">
+        <div class="section-title">INVITATION</div>
+        <div class="invitation-text">
+            사랑과 신뢰로 한 걸음 한 걸음<br>
+            서로의 인생에 다가선 두 사람이<br>
+            이제 하나가 되어<br>
+            새로운 시작을 하려 합니다.<br>
+            <br>
+            귀한 걸음으로 오셔서<br>
+            저희의 앞날을 축복해 주시면<br>
+            더없는 기쁨으로 간직하겠습니다.
+        </div>
+
+        <div class="parents-area">
+            <div class="parents-row">
+                이정형 · 김순희 <span style="font-size:0.8em">의 장남</span> <b>재룡</b>
+            </div>
+            <div class="parents-row">
+                문경철 · 박숙희 <span style="font-size:0.8em">의 장녀</span> <b>지혜</b>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 달력 -->
+    <section class="fade-in-section">
+        <div class="section-title">CALENDAR</div>
+        <div class="calendar-wrap">
+            <div style="font-size:1.2rem; margin-bottom:10px;">2026. 02</div>
+            
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th class="sunday">SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="sunday">1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td class="d-day-cell">7</td></tr>
+                    <tr><td class="sunday">8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr>
+                    <tr><td class="sunday">15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td></tr>
+                    <tr><td class="sunday">22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td></tr>
+                </tbody>
+            </table>
+
+            <div class="d-day-counter">
+                결혼식이 <strong id="d-day"></strong>일 남았습니다.
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 갤러리 -->
+    <section class="fade-in-section" style="padding-left:10px; padding-right:10px;">
+        <div class="section-title">GALLERY</div>
+        <div class="gallery-grid">
+            <img src="20251112_134047.jpg" class="gallery-img">
+            <img src="20251112_120445.jpg" class="gallery-img">
+            <img src="20251112_121513.jpg" class="gallery-img">
+            <img src="20250703_201832.jpg" class="gallery-img">
+        </div>
+    </section>
+
+    <!-- 5. 오시는 길 -->
+    <section class="fade-in-section">
+        <div class="section-title">LOCATION</div>
+        <h3 style="margin-bottom:10px; font-weight:500;">서울 중부교회</h3>
+        <p style="font-size:0.9rem; color:#666; margin-bottom:20px;">서울 성동구 왕십리로 30길 15-1</p>
+        
+        <!-- 지도 영역 -->
+        <div class="map-wrapper">
+            <!-- 
+                [지도 수정] 
+                Lander 생성 시점 문제를 해결하기 위해 로딩 대기 로직을 추가했습니다.
+            -->
+            <div id="daumRoughmapContainer1763972596126" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+            
+            <!-- 로더 스크립트 -->
+            <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+            
+            <!-- 실행 스크립트 (안전한 실행을 위한 재귀 호출 추가) -->
+            <script charset="UTF-8">
+                function initMap() {
+                    // daum.roughmap.Lander가 로드되었는지 확인
+                    if (typeof daum !== 'undefined' && daum.roughmap && daum.roughmap.Lander) {
+                        new daum.roughmap.Lander({
+                            "timestamp" : "1763972596126",
+                            "key" : "d56n3mdpq7r",
+                            "mapWidth" : "380", 
+                            "mapHeight" : "300"
+                        }).render();
+                    } else {
+                        // 아직 로드되지 않았다면 100ms 뒤에 다시 시도
+                        setTimeout(initMap, 100);
+                    }
+                }
+                initMap();
+            </script>
+        </div>
+
+        <div class="location-info">
+            <div><strong>지하철</strong> 상왕십리역 2번 출구 (도보 3분)</div>
+            <div style="margin-top:5px;"><strong>주차</strong> 교회 주차장 이용 가능</div>
+        </div>
+    </section>
+
+    <!-- 6. 마음 전하실 곳 -->
+    <section class="fade-in-section" style="background:#fcfcfc;">
+        <div class="section-title">ACCOUNT</div>
+        
+        <div class="account-box">
+            <div class="account-header" onclick="toggleAcc('acc1')">
+                신랑측 마음 전하실 곳 <span>▼</span>
+            </div>
+            <div id="acc1" class="account-body">
+                <div style="margin-bottom:5px;">국민 (예금주: 이재룡)</div>
+                <div style="display:flex; justify-content:space-between;">
+                    <b>123-456-7890</b>
+                    <button class="btn-copy" onclick="copy('123-456-7890')">복사</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-box">
+            <div class="account-header" onclick="toggleAcc('acc2')">
+                신부측 마음 전하실 곳 <span>▼</span>
+            </div>
+            <div id="acc2" class="account-body">
+                <div style="margin-bottom:5px;">신한 (예금주: 문지혜)</div>
+                <div style="display:flex; justify-content:space-between;">
+                    <b>110-222-333333</b>
+                    <button class="btn-copy" onclick="copy('110-222-333333')">복사</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- 하단 고정바 -->
+<div class="bottom-nav">
+    <a href="tel:010-0000-0000" class="nav-item">📞 전화하기</a>
+    <div class="nav-item highlight" onclick="share()">💌 공유하기</div>
+</div>
+
+<script>
+    /* --- 1. 스크롤 페이드인 효과 --- */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in-section').forEach(section => {
+        observer.observe(section);
+    });
+
+    /* --- 2. 디데이 계산 --- */
+    const dday = new Date("2026-02-07").getTime();
+    const today = new Date().getTime();
+    const gap = dday - today;
+    const day = Math.ceil(gap / (1000 * 60 * 60 * 24));
+    document.getElementById('d-day').innerText = day;
+
+    /* --- 3. 계좌 토글 --- */
+    function toggleAcc(id) {
+        const el = document.getElementById(id);
+        const currentDisplay = window.getComputedStyle(el).display;
+        el.classList.toggle('open');
+    }
+
+    /* --- 4. 복사 기능 --- */
+    function copy(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("계좌번호가 복사되었습니다.");
+        });
+    }
+
+    /* --- 5. 공유 기능 --- */
+    function share() {
+        alert("링크를 복사해서 전달해주세요!");
+    }
+
+    /* --- 6. BGM --- */
+    function toggleAudio() {
+        const audio = document.getElementById('bgm');
+        if(audio.paused) audio.play();
+        else audio.pause();
+    }
+
+    /* --- 7. 꽃잎 효과 --- */
+    function createPetal() {
+        const petal = document.createElement('div');
+        petal.classList.add('petal');
+        petal.style.left = Math.random() * window.innerWidth + 'px';
+        petal.style.width = (Math.random() * 10 + 5) + 'px';
+        petal.style.height = petal.style.width;
+        petal.style.opacity = Math.random() * 0.5 + 0.3;
+        petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        document.body.appendChild(petal);
+        setTimeout(() => petal.remove(), 7000);
+    }
+    setInterval(createPetal, 400);
+
+</script>
+
+</body>
+</html>
