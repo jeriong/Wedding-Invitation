@@ -30,6 +30,7 @@
             text-align: center;
             word-break: keep-all;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent; /* 모바일 터치 하이라이트 제거 */
         }
 
         /* --- [컨테이너] --- */
@@ -219,28 +220,49 @@
             opacity: 0.7;
         }
 
-        /* 이미지 모달 */
+        /* 이미지 확대 모달 (슬라이드 기능 추가) */
         .img-modal {
             display: none; 
             position: fixed; z-index: 9999;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            overflow: hidden;
+            background-color: rgba(0,0,0,0.95);
+            /* 터치 액션 제어 (좌우 스크롤 허용) */
+            touch-action: pan-y; 
         }
         .img-modal-content {
             margin: auto; display: block;
-            width: 90%; max-width: 600px; max-height: 80vh;
+            width: 100%; max-width: 600px; height: auto; max-height: 80vh;
             object-fit: contain;
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
+            user-select: none; /* 드래그 방지 */
         }
         .close-img-modal {
-            position: absolute; top: 20px; right: 30px;
-            color: #fff; font-size: 40px; font-weight: bold;
-            cursor: pointer; z-index: 10000;
+            position: absolute; top: 20px; right: 20px;
+            color: #fff; font-size: 35px; font-weight: 300;
+            cursor: pointer; z-index: 10002;
+            padding: 10px;
         }
+        
+        /* 슬라이드 네비게이션 버튼 */
+        .modal-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.7);
+            font-size: 40px;
+            font-weight: 100;
+            cursor: pointer;
+            z-index: 10001;
+            padding: 20px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .modal-nav-btn:hover { color: #fff; }
+        .modal-prev { left: 0; }
+        .modal-next { right: 0; }
 
         /* 팝업(전화/공유) 공통 스타일 */
         .popup-overlay {
@@ -386,7 +408,7 @@
         <div style="font-size: 0.95rem; color:#888;">서울 중부교회</div>
     </section>
 
-    <!-- 2. 초대글 -->
+    <!-- 2. 초대글 (요청사항 반영) -->
     <section class="fade-in-section">
         <div class="section-title">INVITATION</div>
         <div class="invitation-text">
@@ -396,12 +418,12 @@
                 <span>(아가 7:10)</span>
             </div>
             <br>
-            믿음 안에서 만난 두 사람이<br>
-            사랑으로 하나 되어<br>
-            새로운 시작을 내딛고자 합니다.<br>
+            하나님의 은혜로 만난 두 사람이<br>
+            사랑과 믿음으로 한 길을 걷고자 합니다.<br>
             <br>
-            하나님 안에서 아름다운 가정을 이루도록<br>
-            이 자리를 빛내어 주신다면<br>
+            저희의 첫걸음에 함께하시어<br>
+            따뜻한 격려와 축복으로<br>
+            귀한 자리를 빛내주시면<br>
             더없는 기쁨으로 간직하겠습니다.
         </div>
 
@@ -480,12 +502,12 @@
             <div><strong>지하철</strong> <span>상왕십리역 2번 출구 (도보 3분)</span></div>
             <div style="margin-top:8px;">
                 <strong>주차</strong>
-                <span>교회당 지하 주차장<br>(만차시 인근 도선어린이공원 공영주차장 이용 부탁드립니다)</span>
+                <span>교회당 지하 주차장<br>(만차시 도선어린이공원 공영주차장 이용)</span>
             </div>
         </div>
     </section>
 
-    <!-- 6. 마음 전하실 곳 (업데이트: 혼주 계좌 추가) -->
+    <!-- 6. 마음 전하실 곳 -->
     <section class="fade-in-section" style="background:#fcfcfc;">
         <div class="section-title">ACCOUNT</div>
         
@@ -495,7 +517,6 @@
                 신랑측 마음 전하실 곳 <span>▼</span>
             </div>
             <div id="acc1" class="account-body">
-                <!-- 신랑 본인 -->
                 <div class="bank-row">
                     <div class="bank-info">
                         <span class="bank-name">KEB하나 (예금주: 이재룡)</span>
@@ -503,16 +524,13 @@
                     </div>
                     <button class="btn-copy" onclick="copy('178-910357-82007')">복사</button>
                 </div>
-                <!-- 신랑 혼주 (아버지) -->
                 <div class="bank-row">
                     <div class="bank-info">
                         <span class="bank-name">은행명 (예금주: 이정형)</span>
                         <span class="bank-num">계좌번호 입력 필요</span>
                     </div>
-                    <!-- 실제 계좌 입력 후 아래 버튼 onclick에 번호 넣으세요 -->
                     <button class="btn-copy" onclick="alert('계좌번호가 준비되지 않았습니다.')">복사</button>
                 </div>
-                <!-- 신랑 혼주 (어머니) -->
                 <div class="bank-row">
                     <div class="bank-info">
                         <span class="bank-name">은행명 (예금주: 김순희)</span>
@@ -529,7 +547,6 @@
                 신부측 마음 전하실 곳 <span>▼</span>
             </div>
             <div id="acc2" class="account-body">
-                <!-- 신부 본인 -->
                 <div class="bank-row">
                     <div class="bank-info">
                         <span class="bank-name">신협 (예금주: 문지혜)</span>
@@ -537,7 +554,6 @@
                     </div>
                     <button class="btn-copy" onclick="copy('010-2938-2104')">복사</button>
                 </div>
-                <!-- 신부 혼주 (아버지) -->
                 <div class="bank-row">
                     <div class="bank-info">
                         <span class="bank-name">은행명 (예금주: 문경철)</span>
@@ -545,7 +561,6 @@
                     </div>
                     <button class="btn-copy" onclick="alert('계좌번호가 준비되지 않았습니다.')">복사</button>
                 </div>
-                <!-- 신부 혼주 (어머니) -->
                 <div class="bank-row">
                     <div class="bank-info">
                         <span class="bank-name">은행명 (예금주: 박숙희)</span>
@@ -561,9 +576,7 @@
 
 <!-- 하단 고정바 -->
 <div class="bottom-nav">
-    <!-- 전화하기 버튼: 팝업 열기 -->
     <div class="nav-item" onclick="openContactPopup()">📞 전화하기</div>
-    <!-- 공유하기 버튼: 팝업 열기 -->
     <div class="nav-item highlight" onclick="openSharePopup()">💌 공유하기</div>
 </div>
 
@@ -589,9 +602,11 @@
     </div>
 </div>
 
-<!-- 3. 이미지 확대 모달 -->
-<div id="imgModal" class="img-modal" onclick="closeImgModal()">
-    <span class="close-img-modal">&times;</span>
+<!-- 3. 이미지 확대 모달 (슬라이드 네비게이션 추가) -->
+<div id="imgModal" class="img-modal">
+    <span class="close-img-modal" onclick="closeImgModal()">&times;</span>
+    <div class="modal-nav-btn modal-prev" onclick="prevImg()">&#10094;</div>
+    <div class="modal-nav-btn modal-next" onclick="nextImg()">&#10095;</div>
     <img class="img-modal-content" id="modalImg">
 </div>
 
@@ -621,15 +636,6 @@
         if(audio.paused) audio.play(); else audio.pause();
     }
 
-    /* --- 이미지 모달 --- */
-    function openImgModal(element) {
-        document.getElementById("imgModal").style.display = "block";
-        document.getElementById("modalImg").src = element.src;
-    }
-    function closeImgModal() {
-        document.getElementById("imgModal").style.display = "none";
-    }
-
     /* --- 팝업 (전화/공유) 제어 --- */
     function openContactPopup() {
         document.getElementById("contactPopup").style.display = "flex";
@@ -638,15 +644,12 @@
         document.getElementById("sharePopup").style.display = "flex";
     }
     function closePopups(target) {
-        // 배경 클릭 시 또는 닫기 버튼 클릭 시 닫힘
         if (target === 'all' || target.target.classList.contains('popup-overlay')) {
             document.querySelectorAll('.popup-overlay').forEach(p => p.style.display = 'none');
         }
     }
 
-    /* --- 공유 기능 상세 --- */
     function copyLinkForKakao() {
-        // 실제 카카오톡 공유는 API 키가 필요하므로, 가장 확실한 방법인 '링크 복사' 후 붙여넣기를 유도합니다.
         const url = window.location.href;
         navigator.clipboard.writeText(url).then(() => {
             alert("청첩장 주소가 복사되었습니다.\n카카오톡 대화창에 붙여넣기(Ctrl+V) 하세요.");
@@ -656,7 +659,6 @@
     }
 
     function sendSMS() {
-        // 문자메시지 앱 열기 (내용 미리 채우기)
         const url = window.location.href;
         const msg = `이재룡 & 문지혜의 결혼식에 초대합니다.\n\n${url}`;
         location.href = `sms:?body=${encodeURIComponent(msg)}`;
@@ -675,6 +677,65 @@
         setTimeout(() => petal.remove(), 7000);
     }
     setInterval(createPetal, 400);
+
+    /* --- [NEW] 갤러리 슬라이드 기능 (좌우 버튼 + 스와이프) --- */
+    let currentImgIndex = 0;
+    const galleryImages = document.querySelectorAll('.gallery-img');
+    const modalImg = document.getElementById("modalImg");
+    const modal = document.getElementById("imgModal");
+
+    // 이미지 클릭 시 모달 열기
+    function openImgModal(element) {
+        // 클릭한 이미지가 전체 갤러리 중 몇 번째인지 찾기
+        galleryImages.forEach((img, index) => {
+            if (img === element) currentImgIndex = index;
+        });
+        updateModalImage();
+        modal.style.display = "block";
+    }
+
+    function closeImgModal() {
+        modal.style.display = "none";
+    }
+
+    // 이미지 업데이트 함수
+    function updateModalImage() {
+        modalImg.src = galleryImages[currentImgIndex].src;
+    }
+
+    // 다음/이전 이미지 이동
+    function nextImg() {
+        currentImgIndex = (currentImgIndex + 1) % galleryImages.length;
+        updateModalImage();
+    }
+
+    function prevImg() {
+        currentImgIndex = (currentImgIndex - 1 + galleryImages.length) % galleryImages.length;
+        updateModalImage();
+    }
+
+    // 모달 영역 스와이프 감지
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    modal.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    modal.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+        // 터치 이동 거리가 50px 이상일 때만 동작
+        if (touchEndX < touchStartX - 50) {
+            nextImg(); // 왼쪽으로 밀면 다음 사진
+        }
+        if (touchEndX > touchStartX + 50) {
+            prevImg(); // 오른쪽으로 밀면 이전 사진
+        }
+    }
 </script>
 
 </body>
