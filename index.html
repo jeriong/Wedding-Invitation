@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>이재룡 ♡ 문지혜 결혼합니다</title>
+    <!-- [수정 1] 타이틀 변경 -->
+    <title>이재룡 ♡ 문지혜 결혼식에 초대합니다</title>
     
     <!-- 폰트 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
@@ -125,7 +126,6 @@
         }
         .calendar-table .sunday { color: #e07a5f; }
         
-        /* [수정] D-day 셀 스타일 (z-index 조정으로 가림 현상 해결) */
         .d-day-cell {
             color: #fff !important; font-weight: 600; z-index: 1;
         }
@@ -187,9 +187,8 @@
         }
         .account-header span { font-size: 0.8rem; color: #aaa; transition: transform 0.3s; }
         
-        /* [수정] 펼쳐짐 상태 스타일 */
         .account-box.open .account-header span { transform: rotate(180deg); }
-        .account-box.open .account-body { display: block; } /* display 제어 */
+        .account-box.open .account-body { display: block; } 
         
         .account-body {
             display: none; /* 기본 숨김 */
@@ -234,7 +233,7 @@
         }
         .nav-item.highlight { background: #333; color: #fff; }
 
-        /* [수정] BGM 아이콘 스타일 */
+        /* BGM 아이콘 스타일 */
         .bgm-toggle {
             position: absolute; top: 20px; right: 20px;
             width: 44px; height: 44px; border-radius: 50%;
@@ -313,7 +312,7 @@
 
 <div class="container">
     
-    <!-- [수정] BGM: 기본 Mute 상태 -->
+    <!-- BGM: 기본 Mute 상태 -->
     <div id="bgmToggle" class="bgm-toggle" onclick="toggleAudio()">
         <span id="bgmIcon">🔇</span>
     </div>
@@ -421,12 +420,13 @@
         <div class="location-info">
             <div>
                 <strong>지하철</strong> 
-                <!-- [수정] 굵은 글씨 제거 -->
-                <span>상왕십리역 2번 출구 (도보 3분)</span>
+                <!-- [수정 2] 지하철 문구 변경 -->
+                <span>2호선 상왕십리역 (2번 출구 도보 3분)</span>
             </div>
             <div style="margin-top:12px;">
                 <strong>주차</strong>
-                <span>교회당 지하 주차장<br>(만차시 도선어린이공원 공영주차장)</span>
+                <!-- [수정 3] 주차 문구 및 폰트 사이즈 조정 -->
+                <span>교회당 지하 주차장<br><span style="font-size: 0.8rem; letter-spacing: -0.5px;">(만차시 도선어린이공원 공영주차장 이용 부탁드립니다)</span></span>
             </div>
         </div>
     </section>
@@ -509,7 +509,7 @@
 <!-- 지도 스크립트 -->
 <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
 <script>
-    // --- [수정] BGM 제어: 기본 Mute 상태 ---
+    // --- BGM 제어: 기본 Mute 상태 ---
     const bgm = document.getElementById('bgm');
     const bgmToggle = document.getElementById('bgmToggle');
     const bgmIcon = document.getElementById('bgmIcon');
@@ -550,9 +550,8 @@
         sliderBox.innerHTML = ''; 
     }
 
-    // --- [수정] 계좌 토글 (ID 선택자 문제 해결) ---
+    // --- 계좌 토글 ---
     function toggleAcc(id) {
-        // 전달받은 id(acc1Box 등)에 open 클래스 토글
         document.getElementById(id).classList.toggle('open');
     }
 
