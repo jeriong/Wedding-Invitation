@@ -30,7 +30,7 @@
             text-align: center;
             word-break: keep-all;
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent; /* 모바일 터치 하이라이트 제거 */
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* --- [컨테이너] --- */
@@ -202,7 +202,7 @@
             font-size: 1.2rem;
         }
 
-        /* --- [4. 갤러리 & 모달] --- */
+        /* --- [4. 갤러리 & 모달 (부드러운 전환)] --- */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -216,42 +216,62 @@
             cursor: pointer;
             transition: opacity 0.2s;
         }
-        .gallery-img:active {
-            opacity: 0.7;
-        }
+        .gallery-img:active { opacity: 0.7; }
 
-        /* 이미지 확대 모달 (슬라이드 기능 추가) */
+        /* 모달 전체 화면 */
         .img-modal {
             display: none; 
             position: fixed; z-index: 9999;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.95);
-            /* 터치 액션 제어 (좌우 스크롤 허용) */
-            touch-action: pan-y; 
+            background-color: rgba(0,0,0,0.98);
         }
-        .img-modal-content {
-            margin: auto; display: block;
-            width: 100%; max-width: 600px; height: auto; max-height: 80vh;
-            object-fit: contain;
+        
+        /* 스크롤 가능한 슬라이더 영역 */
+        .modal-slider-box {
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            user-select: none; /* 드래그 방지 */
+            top: 50%; left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 80vh;
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory; 
+            scroll-behavior: smooth; /* [핵심] 부드러운 전환 효과 */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+        .modal-slider-box::-webkit-scrollbar { display: none; }
+
+        /* 개별 슬라이드 */
+        .modal-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            scroll-snap-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
         .close-img-modal {
             position: absolute; top: 20px; right: 20px;
             color: #fff; font-size: 35px; font-weight: 300;
-            cursor: pointer; z-index: 10002;
-            padding: 10px;
+            cursor: pointer; z-index: 10002; padding: 10px;
         }
         
-        /* 슬라이드 네비게이션 버튼 */
+        /* 슬라이드 네비게이션 버튼 (화살표) */
         .modal-nav-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.4); /* 평소엔 연하게 */
             font-size: 40px;
             font-weight: 100;
             cursor: pointer;
@@ -259,11 +279,12 @@
             padding: 20px;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            transition: color 0.3s;
         }
         .modal-nav-btn:hover { color: #fff; }
         .modal-prev { left: 0; }
         .modal-next { right: 0; }
-
+        
         /* 팝업(전화/공유) 공통 스타일 */
         .popup-overlay {
             display: none;
@@ -408,7 +429,7 @@
         <div style="font-size: 0.95rem; color:#888;">서울 중부교회</div>
     </section>
 
-    <!-- 2. 초대글 (요청사항 반영) -->
+    <!-- 2. 초대글 -->
     <section class="fade-in-section">
         <div class="section-title">INVITATION</div>
         <div class="invitation-text">
@@ -421,9 +442,7 @@
             하나님의 은혜로 만난 두 사람이<br>
             사랑과 믿음으로 한 길을 걷고자 합니다.<br>
             <br>
-            저희의 첫걸음에 함께하시어<br>
-            따뜻한 격려와 축복으로<br>
-            귀한 자리를 빛내주시면<br>
+            이 자리를 함께 빛내주신다면<br>
             더없는 기쁨으로 간직하겠습니다.
         </div>
 
@@ -461,14 +480,21 @@
         </div>
     </section>
 
-    <!-- 4. 갤러리 -->
+    <!-- 4. 갤러리 (10장까지 확장) -->
     <section class="fade-in-section" style="padding-left:10px; padding-right:10px;">
         <div class="section-title">GALLERY</div>
         <div class="gallery-grid">
-            <img src="gallery1.jpg" class="gallery-img" onclick="openImgModal(this)" onerror="this.src='https://via.placeholder.com/300?text=gallery1.jpg'">
-            <img src="gallery2.jpg" class="gallery-img" onclick="openImgModal(this)" onerror="this.src='https://via.placeholder.com/300?text=gallery2.jpg'">
-            <img src="gallery3.jpg" class="gallery-img" onclick="openImgModal(this)" onerror="this.src='https://via.placeholder.com/300?text=gallery3.jpg'">
-            <img src="gallery4.jpg" class="gallery-img" onclick="openImgModal(this)" onerror="this.src='https://via.placeholder.com/300?text=gallery4.jpg'">
+            <img src="gallery1.jpg" class="gallery-img" onclick="openImgModal(0)" onerror="this.src='https://via.placeholder.com/300?text=gallery1.jpg'">
+            <img src="gallery2.jpg" class="gallery-img" onclick="openImgModal(1)" onerror="this.src='https://via.placeholder.com/300?text=gallery2.jpg'">
+            <img src="gallery3.jpg" class="gallery-img" onclick="openImgModal(2)" onerror="this.src='https://via.placeholder.com/300?text=gallery3.jpg'">
+            <img src="gallery4.jpg" class="gallery-img" onclick="openImgModal(3)" onerror="this.src='https://via.placeholder.com/300?text=gallery4.jpg'">
+            <!-- 추가된 슬롯 -->
+            <img src="gallery5.jpg" class="gallery-img" onclick="openImgModal(4)" onerror="this.src='https://via.placeholder.com/300?text=gallery5.jpg'">
+            <img src="gallery6.jpg" class="gallery-img" onclick="openImgModal(5)" onerror="this.src='https://via.placeholder.com/300?text=gallery6.jpg'">
+            <img src="gallery7.jpg" class="gallery-img" onclick="openImgModal(6)" onerror="this.src='https://via.placeholder.com/300?text=gallery7.jpg'">
+            <img src="gallery8.jpg" class="gallery-img" onclick="openImgModal(7)" onerror="this.src='https://via.placeholder.com/300?text=gallery8.jpg'">
+            <img src="gallery9.jpg" class="gallery-img" onclick="openImgModal(8)" onerror="this.src='https://via.placeholder.com/300?text=gallery9.jpg'">
+            <img src="gallery10.jpg" class="gallery-img" onclick="openImgModal(9)" onerror="this.src='https://via.placeholder.com/300?text=gallery10.jpg'">
         </div>
     </section>
 
@@ -502,7 +528,7 @@
             <div><strong>지하철</strong> <span>상왕십리역 2번 출구 (도보 3분)</span></div>
             <div style="margin-top:8px;">
                 <strong>주차</strong>
-                <span>교회당 지하 주차장<br>(만차시 도선어린이공원 공영주차장 이용)</span>
+                <span>교회당 지하 주차장<br>(만차시 도선어린이공원 공영주차장)</span>
             </div>
         </div>
     </section>
@@ -602,12 +628,14 @@
     </div>
 </div>
 
-<!-- 3. 이미지 확대 모달 (슬라이드 네비게이션 추가) -->
+<!-- 3. 이미지 확대 모달 (좌우 버튼 추가 + 부드러운 스크롤) -->
 <div id="imgModal" class="img-modal">
     <span class="close-img-modal" onclick="closeImgModal()">&times;</span>
-    <div class="modal-nav-btn modal-prev" onclick="prevImg()">&#10094;</div>
-    <div class="modal-nav-btn modal-next" onclick="nextImg()">&#10095;</div>
-    <img class="img-modal-content" id="modalImg">
+    <div class="modal-nav-btn modal-prev" onclick="moveSlide(-1)">&#10094;</div>
+    <div class="modal-nav-btn modal-next" onclick="moveSlide(1)">&#10095;</div>
+    <div class="modal-slider-box" id="modalSliderBox">
+        <!-- 자바스크립트로 이미지들이 여기에 동적으로 들어갑니다 -->
+    </div>
 </div>
 
 <script>
@@ -678,63 +706,52 @@
     }
     setInterval(createPetal, 400);
 
-    /* --- [NEW] 갤러리 슬라이드 기능 (좌우 버튼 + 스와이프) --- */
-    let currentImgIndex = 0;
+    /* --- [NEW] 갤러리 슬라이드 기능 (버튼 + 부드러운 스크롤) --- */
     const galleryImages = document.querySelectorAll('.gallery-img');
-    const modalImg = document.getElementById("modalImg");
     const modal = document.getElementById("imgModal");
+    const sliderBox = document.getElementById("modalSliderBox");
+    let isSliderInit = false;
 
-    // 이미지 클릭 시 모달 열기
-    function openImgModal(element) {
-        // 클릭한 이미지가 전체 갤러리 중 몇 번째인지 찾기
-        galleryImages.forEach((img, index) => {
-            if (img === element) currentImgIndex = index;
+    // 갤러리 초기화 (모달 안에 이미지 복사해 넣기)
+    function initGallerySlider() {
+        if (isSliderInit) return;
+        galleryImages.forEach(img => {
+            const slide = document.createElement('div');
+            slide.className = 'modal-slide';
+            const newImg = document.createElement('img');
+            newImg.src = img.src;
+            slide.appendChild(newImg);
+            sliderBox.appendChild(slide);
         });
-        updateModalImage();
+        isSliderInit = true;
+    }
+
+    // 이미지 클릭 시 모달 열기 및 해당 위치로 이동
+    function openImgModal(index) {
+        initGallerySlider(); // 최초 실행 시 슬라이더 생성
         modal.style.display = "block";
+        
+        // 해당 인덱스로 즉시 이동 (열릴 때는 부드럽게 말고 바로 보이게)
+        setTimeout(() => {
+            const width = sliderBox.clientWidth;
+            sliderBox.scrollTo({
+                left: width * index,
+                behavior: 'auto' 
+            });
+        }, 10);
+    }
+
+    // 화살표 버튼 클릭 시 이동 (부드럽게)
+    function moveSlide(direction) {
+        const width = sliderBox.clientWidth;
+        sliderBox.scrollBy({
+            left: width * direction,
+            behavior: 'smooth' 
+        });
     }
 
     function closeImgModal() {
         modal.style.display = "none";
-    }
-
-    // 이미지 업데이트 함수
-    function updateModalImage() {
-        modalImg.src = galleryImages[currentImgIndex].src;
-    }
-
-    // 다음/이전 이미지 이동
-    function nextImg() {
-        currentImgIndex = (currentImgIndex + 1) % galleryImages.length;
-        updateModalImage();
-    }
-
-    function prevImg() {
-        currentImgIndex = (currentImgIndex - 1 + galleryImages.length) % galleryImages.length;
-        updateModalImage();
-    }
-
-    // 모달 영역 스와이프 감지
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    modal.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, {passive: true});
-
-    modal.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, {passive: true});
-
-    function handleSwipe() {
-        // 터치 이동 거리가 50px 이상일 때만 동작
-        if (touchEndX < touchStartX - 50) {
-            nextImg(); // 왼쪽으로 밀면 다음 사진
-        }
-        if (touchEndX > touchStartX + 50) {
-            prevImg(); // 오른쪽으로 밀면 이전 사진
-        }
     }
 </script>
 
