@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- [수정 1] 타이틀 변경 -->
     <title>이재룡 ♡ 문지혜 결혼식에 초대합니다</title>
     
     <!-- 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         /* --- [변수 및 기본 설정] --- */
@@ -92,10 +91,40 @@
             font-size: 0.95rem; color: #444; margin-bottom: 50px;
             font-weight: 300; line-height: 2.4;
         }
-        .bible-verse { margin-bottom: 30px; color: #666; font-style: italic; }
+        
+        /* [수정] 성경 구절 박스: 닫는 따옴표 추가 */
+        .bible-box {
+            background-color: #fbf7f2;
+            padding: 35px 20px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .bible-box::before {
+            content: '❝';
+            font-family: serif;
+            position: absolute;
+            top: 10px; left: 20px; /* 위치 조정 */
+            font-size: 2rem;
+            color: var(--accent-color);
+            opacity: 0.3;
+        }
+        .bible-box::after {
+            content: '❞';
+            font-family: serif;
+            position: absolute;
+            bottom: -10px; right: 20px; /* 위치 조정 */
+            font-size: 2rem;
+            color: var(--accent-color);
+            opacity: 0.3;
+        }
+        .bible-verse {
+            margin-top: 5px;
+            color: #555; font-style: italic; font-size: 0.95rem;
+        }
         .bible-verse span {
             display: block; margin-top: 10px;
-            font-size: 0.85rem; color: var(--accent-color); font-style: normal;
+            font-size: 0.8rem; color: var(--accent-color); font-style: normal; font-weight: 500;
         }
 
         .parents-area { background-color: #fafafa; padding: 30px 20px; border-radius: 8px; }
@@ -125,6 +154,7 @@
             color: #888; font-weight: 300; position: relative;
         }
         .calendar-table .sunday { color: #e07a5f; }
+        .calendar-table td:last-child { color: #6688cc; } /* 토요일 파랑 */
         
         .d-day-cell {
             color: #fff !important; font-weight: 600; z-index: 1;
@@ -132,7 +162,7 @@
         .d-day-cell::before {
             content: ''; position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 30px; height: 30px; /* 원 크기 */
+            width: 30px; height: 30px;
             background-color: var(--accent-color);
             border-radius: 50%; z-index: -1;
         }
@@ -166,6 +196,20 @@
             height: 280px; overflow: hidden; position: relative;
         }
         .root_daum_roughmap { width: 100% !important; max-width: 100% !important; }
+
+        /* [수정] 지도 앱 버튼: 심플하고 세련되게 통일 */
+        .map-btn-group {
+            display: flex; gap: 8px; margin-top: 15px;
+        }
+        .map-app-btn {
+            flex: 1; padding: 12px 0; border-radius: 4px;
+            text-decoration: none; font-size: 0.85rem; color: #444;
+            background: #fff; border: 1px solid #ddd; /* 단색 라인 스타일 */
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .map-app-btn:hover { background: #f9f9f9; border-color: #bbb; color: #222; }
 
         .location-info {
             text-align: left; padding: 25px 10px;
@@ -207,12 +251,43 @@
         
         .btn-copy {
             background: #fff; border: 1px solid #ccc;
-            padding: 0; width: 50px; height: 32px;
+            padding: 0; width: 60px; height: 32px;
             font-size: 0.8rem; color: #555; border-radius: 4px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .btn-copy.copied {
+            background: #333; color: #fff; border-color: #333;
         }
 
-        /* --- [토스트/하단바/모달/팝업 등 공통] --- */
+        /* --- [7. Footer (엔딩 섹션 & 흑백사진)] --- */
+        .footer-section {
+            padding: 60px 20px 40px;
+            background-color: #fbfbfb;
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+        .footer-photo-frame {
+            width: 120px; height: 150px; /* 세로 사진 비율 */
+            margin: 0 auto 30px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 5px solid #fff; /* 흰색 테두리 */
+        }
+        .footer-photo {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%); /* 흑백 처리 */
+            opacity: 0.8;
+        }
+        .footer-msg {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1rem; color: #555; margin-bottom: 20px; line-height: 2;
+        }
+
+        /* --- [공통 UI] --- */
         .toast-msg {
             position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
             background: rgba(0,0,0,0.8); color: #fff; padding: 12px 24px;
@@ -233,7 +308,6 @@
         }
         .nav-item.highlight { background: #333; color: #fff; }
 
-        /* BGM 아이콘 스타일 */
         .bgm-toggle {
             position: absolute; top: 20px; right: 20px;
             width: 44px; height: 44px; border-radius: 50%;
@@ -242,7 +316,6 @@
             font-size: 1.2rem; color: var(--accent-color);
             z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;
         }
-        /* 재생 중일 때 회전 효과 */
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         .bgm-toggle.playing { animation: pulse 2s infinite; color: var(--point-color); }
 
@@ -277,6 +350,21 @@
             cursor: pointer; z-index: 10001; padding: 20px; user-select: none;
         }
         .modal-prev { left: 0; } .modal-next { right: 0; }
+
+        .swipe-guide {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 10005; pointer-events: none;
+            color: #fff; font-size: 1.2rem; text-align: center;
+            opacity: 0; animation: swipeHint 2.5s ease-in-out;
+        }
+        .swipe-guide .hand-icon { font-size: 3rem; display: block; margin-bottom: 10px; }
+        @keyframes swipeHint {
+            0% { opacity: 0; transform: translate(-50%, -50%) translateX(0); }
+            20% { opacity: 1; }
+            50% { transform: translate(-50%, -50%) translateX(-30px); }
+            80% { transform: translate(-50%, -50%) translateX(30px); opacity: 1; }
+            100% { opacity: 0; }
+        }
 
         .popup-overlay {
             display: none; position: fixed; z-index: 9990; left: 0; top: 0;
@@ -337,10 +425,13 @@
     <section class="fade-in-section">
         <div class="section-title">INVITATION</div>
         <div class="invitation-text">
-            <div class="bible-verse">
-                "나는 나의 사랑하는 자에게 속하였구나<br>
-                그가 나를 사모하는구나"
-                <span>(아가 7:10)</span>
+            <!-- [수정] 성경구절 박스 (따옴표 완성) -->
+            <div class="bible-box">
+                <div class="bible-verse">
+                    "나는 나의 사랑하는 자에게 속하였구나<br>
+                    그가 나를 사모하는구나"
+                    <span>(아가 7:10)</span>
+                </div>
             </div>
             <br>
             하나님의 은혜로 만난 두 사람이<br>
@@ -417,16 +508,22 @@
             <div id="daumRoughmapContainer1763972596126" class="root_daum_roughmap root_daum_roughmap_landing"></div>
         </div>
         
+        <!-- [수정] 심플해진 지도 버튼 (주소 기반 링크) -->
+        <div class="map-btn-group">
+            <a href="https://map.naver.com/p/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">네이버 지도</a>
+            <a href="https://map.kakao.com/link/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">카카오맵</a>
+            <a href="https://surl.tmap.co.kr/92289352" class="map-app-btn">티맵</a>
+        </div>
+
         <div class="location-info">
             <div>
                 <strong>지하철</strong> 
-                <!-- [수정 2] 지하철 문구 변경 -->
-                <span>2호선 상왕십리역 (2번 출구 도보 3분)</span>
+                <!-- [수정] 텍스트 변경 & 배지 삭제 -->
+                <span>2호선 상왕십리역 (2번 출구)</span>
             </div>
             <div style="margin-top:12px;">
                 <strong>주차</strong>
-                <!-- [수정 3] 주차 문구 및 폰트 사이즈 조정 -->
-                <span>교회당 지하 주차장<br><span style="font-size: 0.8rem; letter-spacing: -0.5px;">(만차시 도선어린이공원 공영주차장 이용 부탁드립니다)</span></span>
+                <span>교회당 지하 주차장<br><span style="font-size: 0.8rem; letter-spacing: -0.5px;">(만차시 도선어린이공원 공영주차장)</span></span>
             </div>
         </div>
     </section>
@@ -446,7 +543,7 @@
                         <span class="bank-name">KEB하나 (이재룡)</span>
                         <span class="bank-num">178-910357-82007</span>
                     </div>
-                    <button class="btn-copy" onclick="copy('178-910357-82007')">복사</button>
+                    <button class="btn-copy" onclick="copy(this, '178-910357-82007')">복사</button>
                 </div>
             </div>
         </div>
@@ -462,11 +559,26 @@
                         <span class="bank-name">신협 (문지혜)</span>
                         <span class="bank-num">010-2938-2104</span>
                     </div>
-                    <button class="btn-copy" onclick="copy('010-2938-2104')">복사</button>
+                    <button class="btn-copy" onclick="copy(this, '010-2938-2104')">복사</button>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- [추가] 7. Footer (흑백 사진 & 마무리) -->
+    <footer class="footer-section">
+        <!-- 흑백 사진 자리 (임시로 갤러리4 활용) -->
+        <div class="footer-photo-frame">
+            <img src="gallery4.jpg" class="footer-photo" onerror="this.src='https://via.placeholder.com/120x150/eee?text=Photo'">
+        </div>
+        <div class="footer-msg">
+            저희 두 사람, 예쁘게 잘 살겠습니다.<br>
+            감사합니다.
+        </div>
+        <div style="font-size:0.75rem; color:#bbb;">
+            Copyright 2026. Jaeryong & Jihye. All rights reserved.
+        </div>
+    </footer>
 
 </div>
 
@@ -503,13 +615,20 @@
     <span class="close-img-modal" onclick="closeImgModal()">&times;</span>
     <div class="modal-nav-btn modal-prev" onclick="moveSlide(-1)">&#10094;</div>
     <div class="modal-nav-btn modal-next" onclick="moveSlide(1)">&#10095;</div>
+    
+    <!-- 스와이프 안내 가이드 -->
+    <div id="swipeGuide" class="swipe-guide">
+        <span class="hand-icon">👆</span>
+        좌우로 넘겨보세요
+    </div>
+
     <div class="modal-slider-box" id="modalSliderBox"></div>
 </div>
 
 <!-- 지도 스크립트 -->
 <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
 <script>
-    // --- BGM 제어: 기본 Mute 상태 ---
+    // --- BGM 제어 ---
     const bgm = document.getElementById('bgm');
     const bgmToggle = document.getElementById('bgmToggle');
     const bgmIcon = document.getElementById('bgmIcon');
@@ -530,10 +649,10 @@
         isPlaying = play;
         if (play) {
             bgmToggle.classList.add('playing');
-            bgmIcon.innerText = '🔊'; // 재생 아이콘
+            bgmIcon.innerText = '🔊';
         } else {
             bgmToggle.classList.remove('playing');
-            bgmIcon.innerText = '🔇'; // 음소거 아이콘
+            bgmIcon.innerText = '🔇';
         }
     }
 
@@ -555,9 +674,10 @@
         document.getElementById(id).classList.toggle('open');
     }
 
-    // --- 복사 & 토스트 ---
-    function copy(text) {
+    // --- 복사 & 피드백 ---
+    function copy(btnElement, text) {
         navigator.clipboard.writeText(text).then(() => {
+            showCopyFeedback(btnElement);
             showToast();
         }).catch(() => {
             const textArea = document.createElement("textarea");
@@ -566,8 +686,19 @@
             textArea.select();
             document.execCommand("Copy");
             textArea.remove();
+            showCopyFeedback(btnElement);
             showToast();
         });
+    }
+
+    function showCopyFeedback(btn) {
+        const originalText = btn.innerText;
+        btn.innerText = "복사됨 ✔";
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.classList.remove('copied');
+        }, 2000);
     }
 
     function showToast() {
@@ -587,8 +718,9 @@
     
     // --- 공유 ---
     function copyLinkForKakao() {
-        copy(window.location.href);
-        alert("링크가 복사되었습니다. 카카오톡에 붙여넣어 주세요.");
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            alert("링크가 복사되었습니다. 카카오톡에 붙여넣어 주세요.");
+        });
     }
     function sendSMS() {
         const url = window.location.href;
@@ -656,6 +788,13 @@
     function openImgModal(index) {
         initGallerySlider();
         modal.style.display = "block";
+        
+        const guide = document.getElementById('swipeGuide');
+        guide.style.display = 'block';
+        guide.style.animation = 'none';
+        void guide.offsetWidth; 
+        guide.style.animation = 'swipeHint 2.5s ease-in-out forwards';
+
         setTimeout(() => {
             const width = sliderBox.clientWidth;
             sliderBox.scrollTo({ left: width * index, behavior: 'auto' });
