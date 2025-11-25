@@ -589,14 +589,49 @@
 
         .bgm-toggle {
             position: absolute; top: 20px; right: 20px;
-            width: 44px; height: 44px; border-radius: 50%;
-            background: rgba(255,255,255,0.95); border: 1px solid var(--accent-light);
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.85); 
+            border: 1px solid rgba(201, 168, 124, 0.3);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; color: var(--accent-color);
-            z-index: 50; box-shadow: 0 2px 12px rgba(0,0,0,0.08); cursor: pointer;
+            z-index: 50; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); 
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
         }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        .bgm-toggle.playing { animation: pulse 2s infinite; color: var(--point-color); }
+        .bgm-toggle:hover {
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .bgm-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--accent-color);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .bgm-toggle.playing svg {
+            stroke: var(--point-color);
+        }
+        .bgm-toggle.playing {
+            animation: pulse 2s infinite;
+        }
+        .bgm-toggle.playing::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid var(--accent-color);
+            animation: ripple 2s infinite;
+        }
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
         /* 모달 */
         .img-modal {
@@ -615,6 +650,7 @@
         .modal-slider-box::-webkit-scrollbar { display: none; }
         .modal-slider-box.is-zoomed {
             overflow: hidden;
+            scroll-snap-type: none;
         }
         .modal-slide {
             flex: 0 0 100%; 
@@ -626,15 +662,16 @@
             display: flex;
             justify-content: center; align-items: center;
             overflow: hidden;
-            touch-action: pan-x pinch-zoom;
+            position: relative;
         }
         .modal-slide img { 
             max-width: 100%; 
             max-height: 100%; 
             object-fit: contain; 
-            transition: transform 0.1s ease-out;
-            transform-origin: center center;
-            touch-action: pinch-zoom;
+            transition: none;
+            will-change: transform;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         .close-img-modal {
@@ -742,7 +779,16 @@
     
     <!-- BGM -->
     <div id="bgmToggle" class="bgm-toggle" onclick="toggleAudio()">
-        <span id="bgmIcon">🔇</span>
+        <svg id="bgmIconMute" viewBox="0 0 24 24">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+        <svg id="bgmIconPlay" viewBox="0 0 24 24" style="display:none;">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg>
     </div>
     <audio id="bgm" loop>
         <source src="bgm.mp3" type="audio/mpeg">
@@ -1033,7 +1079,8 @@
     // ========== BGM 제어 ==========
     const bgm = document.getElementById('bgm');
     const bgmToggle = document.getElementById('bgmToggle');
-    const bgmIcon = document.getElementById('bgmIcon');
+    const bgmIconMute = document.getElementById('bgmIconMute');
+    const bgmIconPlay = document.getElementById('bgmIconPlay');
     let isPlaying = false;
 
     function toggleAudio() {
@@ -1051,10 +1098,12 @@
         isPlaying = play;
         if (play) {
             bgmToggle.classList.add('playing');
-            bgmIcon.innerText = '🔊';
+            bgmIconMute.style.display = 'none';
+            bgmIconPlay.style.display = 'block';
         } else {
             bgmToggle.classList.remove('playing');
-            bgmIcon.innerText = '🔇';
+            bgmIconMute.style.display = 'block';
+            bgmIconPlay.style.display = 'none';
         }
     }
 
@@ -1270,12 +1319,6 @@ END:VCALENDAR`;
     const sliderBox = document.getElementById("modalSliderBox");
     let isSliderInit = false;
 
-    // 핀치 줌 관련 변수
-    let currentScale = 1;
-    let currentImg = null;
-    let initialDistance = 0;
-    let lastScale = 1;
-
     function initGallerySlider() {
         if (isSliderInit) return;
         const allImgs = document.querySelectorAll('.gallery-grid img'); 
@@ -1298,62 +1341,168 @@ END:VCALENDAR`;
 
     function setupPinchZoom(img, slide) {
         let scale = 1;
+        let posX = 0;
+        let posY = 0;
         let startDistance = 0;
         let startScale = 1;
-        
+        let startX = 0;
+        let startY = 0;
+        let startPosX = 0;
+        let startPosY = 0;
+        let isPinching = false;
+        let isPanning = false;
+        let pinchCenterX = 0;
+        let pinchCenterY = 0;
+
+        function updateTransform() {
+            img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+        }
+
+        function getDistance(t1, t2) {
+            return Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+        }
+
+        function getCenter(t1, t2) {
+            return {
+                x: (t1.clientX + t2.clientX) / 2,
+                y: (t1.clientY + t2.clientY) / 2
+            };
+        }
+
         slide.addEventListener('touchstart', (e) => {
             if (e.touches.length === 2) {
                 e.preventDefault();
+                isPinching = true;
                 startDistance = getDistance(e.touches[0], e.touches[1]);
                 startScale = scale;
+                
+                const center = getCenter(e.touches[0], e.touches[1]);
+                const rect = img.getBoundingClientRect();
+                pinchCenterX = center.x - rect.left - rect.width / 2;
+                pinchCenterY = center.y - rect.top - rect.height / 2;
+                
+                startPosX = posX;
+                startPosY = posY;
+                
                 sliderBox.classList.add('is-zoomed');
+            } else if (e.touches.length === 1 && scale > 1) {
+                isPanning = true;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                startPosX = posX;
+                startPosY = posY;
             }
         }, { passive: false });
-        
+
         slide.addEventListener('touchmove', (e) => {
-            if (e.touches.length === 2) {
+            if (isPinching && e.touches.length === 2) {
                 e.preventDefault();
                 const currentDistance = getDistance(e.touches[0], e.touches[1]);
-                scale = Math.min(Math.max(startScale * (currentDistance / startDistance), 1), 4);
-                img.style.transform = `scale(${scale})`;
+                const newScale = Math.min(Math.max(startScale * (currentDistance / startDistance), 1), 4);
+                
+                // 핀치 중심점 기준으로 위치 조정
+                const scaleDiff = newScale - startScale;
+                posX = startPosX - (pinchCenterX * scaleDiff / startScale);
+                posY = startPosY - (pinchCenterY * scaleDiff / startScale);
+                
+                scale = newScale;
                 
                 if (scale > 1) {
                     sliderBox.classList.add('is-zoomed');
                 }
+                
+                updateTransform();
+            } else if (isPanning && e.touches.length === 1 && scale > 1) {
+                e.preventDefault();
+                const deltaX = e.touches[0].clientX - startX;
+                const deltaY = e.touches[0].clientY - startY;
+                
+                // 이동 범위 제한
+                const rect = img.getBoundingClientRect();
+                const maxX = (rect.width * scale - rect.width) / 2;
+                const maxY = (rect.height * scale - rect.height) / 2;
+                
+                posX = Math.max(-maxX, Math.min(maxX, startPosX + deltaX));
+                posY = Math.max(-maxY, Math.min(maxY, startPosY + deltaY));
+                
+                updateTransform();
             }
         }, { passive: false });
-        
+
         slide.addEventListener('touchend', (e) => {
             if (e.touches.length < 2) {
-                if (scale <= 1.1) {
+                isPinching = false;
+            }
+            if (e.touches.length === 0) {
+                isPanning = false;
+                
+                // 스케일이 1 이하면 리셋
+                if (scale <= 1.05) {
                     scale = 1;
-                    img.style.transform = 'scale(1)';
+                    posX = 0;
+                    posY = 0;
+                    updateTransform();
                     sliderBox.classList.remove('is-zoomed');
                 }
+            }
+        });
+
+        // 더블탭으로 줌 토글
+        let lastTap = 0;
+        let lastTapX = 0;
+        let lastTapY = 0;
+        
+        slide.addEventListener('touchend', (e) => {
+            if (e.touches.length === 0 && e.changedTouches.length === 1) {
+                const currentTime = Date.now();
+                const tapX = e.changedTouches[0].clientX;
+                const tapY = e.changedTouches[0].clientY;
+                
+                if (currentTime - lastTap < 300 && 
+                    Math.abs(tapX - lastTapX) < 30 && 
+                    Math.abs(tapY - lastTapY) < 30) {
+                    e.preventDefault();
+                    
+                    if (scale > 1) {
+                        // 줌 아웃
+                        scale = 1;
+                        posX = 0;
+                        posY = 0;
+                        sliderBox.classList.remove('is-zoomed');
+                    } else {
+                        // 탭 위치 기준으로 2배 줌인
+                        const rect = img.getBoundingClientRect();
+                        const centerX = tapX - rect.left - rect.width / 2;
+                        const centerY = tapY - rect.top - rect.height / 2;
+                        
+                        scale = 2;
+                        posX = -centerX;
+                        posY = -centerY;
+                        sliderBox.classList.add('is-zoomed');
+                    }
+                    
+                    img.style.transition = 'transform 0.3s ease';
+                    updateTransform();
+                    setTimeout(() => {
+                        img.style.transition = 'none';
+                    }, 300);
+                }
+                
+                lastTap = currentTime;
+                lastTapX = tapX;
+                lastTapY = tapY;
             }
         });
         
-        // 더블탭으로 줌 리셋
-        let lastTap = 0;
-        slide.addEventListener('touchend', (e) => {
-            if (e.touches.length === 0 && e.changedTouches.length === 1) {
-                const currentTime = new Date().getTime();
-                const tapLength = currentTime - lastTap;
-                if (tapLength < 300 && tapLength > 0) {
-                    e.preventDefault();
-                    scale = 1;
-                    img.style.transform = 'scale(1)';
-                    sliderBox.classList.remove('is-zoomed');
-                }
-                lastTap = currentTime;
-            }
-        });
-    }
-
-    function getDistance(touch1, touch2) {
-        const dx = touch1.clientX - touch2.clientX;
-        const dy = touch1.clientY - touch2.clientY;
-        return Math.sqrt(dx * dx + dy * dy);
+        // 슬라이드 변경 시 리셋
+        const resetZoom = () => {
+            scale = 1;
+            posX = 0;
+            posY = 0;
+            updateTransform();
+        };
+        
+        slide.resetZoom = resetZoom;
     }
 
     function openImgModal(index) {
@@ -1377,9 +1526,11 @@ END:VCALENDAR`;
         modal.style.display = "none"; 
         document.body.style.overflow = '';
         
-        // 모든 이미지 줌 리셋
-        document.querySelectorAll('.modal-slide img').forEach(img => {
-            img.style.transform = 'scale(1)';
+        // 모든 슬라이드 줌 리셋
+        document.querySelectorAll('.modal-slide').forEach(slide => {
+            if (slide.resetZoom) slide.resetZoom();
+            const img = slide.querySelector('img');
+            if (img) img.style.transform = 'translate(0px, 0px) scale(1)';
         });
         sliderBox.classList.remove('is-zoomed');
     }
