@@ -92,7 +92,7 @@
             font-weight: 300; line-height: 2.4;
         }
         
-        /* [수정] 성경 구절 박스: 닫는 따옴표 추가 */
+        /* 성경 구절 박스 */
         .bible-box {
             background-color: #fbf7f2;
             padding: 35px 20px;
@@ -104,7 +104,7 @@
             content: '❝';
             font-family: serif;
             position: absolute;
-            top: 10px; left: 20px; /* 위치 조정 */
+            top: 10px; left: 20px;
             font-size: 2rem;
             color: var(--accent-color);
             opacity: 0.3;
@@ -113,7 +113,7 @@
             content: '❞';
             font-family: serif;
             position: absolute;
-            bottom: -10px; right: 20px; /* 위치 조정 */
+            bottom: -10px; right: 20px;
             font-size: 2rem;
             color: var(--accent-color);
             opacity: 0.3;
@@ -154,7 +154,7 @@
             color: #888; font-weight: 300; position: relative;
         }
         .calendar-table .sunday { color: #e07a5f; }
-        .calendar-table td:last-child { color: #6688cc; } /* 토요일 파랑 */
+        .calendar-table td:last-child { color: #6688cc; }
         
         .d-day-cell {
             color: #fff !important; font-weight: 600; z-index: 1;
@@ -197,14 +197,14 @@
         }
         .root_daum_roughmap { width: 100% !important; max-width: 100% !important; }
 
-        /* [수정] 지도 앱 버튼: 심플하고 세련되게 통일 */
+        /* 지도 앱 버튼 */
         .map-btn-group {
             display: flex; gap: 8px; margin-top: 15px;
         }
         .map-app-btn {
             flex: 1; padding: 12px 0; border-radius: 4px;
             text-decoration: none; font-size: 0.85rem; color: #444;
-            background: #fff; border: 1px solid #ddd; /* 단색 라인 스타일 */
+            background: #fff; border: 1px solid #ddd;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s;
             font-family: 'Noto Sans KR', sans-serif;
@@ -258,33 +258,6 @@
         }
         .btn-copy.copied {
             background: #333; color: #fff; border-color: #333;
-        }
-
-        /* --- [7. Footer (엔딩 섹션 & 흑백사진)] --- */
-        .footer-section {
-            padding: 60px 20px 40px;
-            background-color: #fbfbfb;
-            font-size: 0.85rem;
-            color: #888;
-            text-align: center;
-            border-top: 1px solid #eee;
-        }
-        .footer-photo-frame {
-            width: 120px; height: 150px; /* 세로 사진 비율 */
-            margin: 0 auto 30px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border: 5px solid #fff; /* 흰색 테두리 */
-        }
-        .footer-photo {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%); /* 흑백 처리 */
-            opacity: 0.8;
-        }
-        .footer-msg {
-            font-family: 'Noto Serif KR', serif;
-            font-size: 1rem; color: #555; margin-bottom: 20px; line-height: 2;
         }
 
         /* --- [공통 UI] --- */
@@ -508,17 +481,17 @@
             <div id="daumRoughmapContainer1763972596126" class="root_daum_roughmap root_daum_roughmap_landing"></div>
         </div>
         
-        <!-- [수정] 심플해진 지도 버튼 (주소 기반 링크) -->
+        <!-- [수정] 티맵 버튼 (앱 연동) -->
         <div class="map-btn-group">
             <a href="https://map.naver.com/p/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">네이버 지도</a>
             <a href="https://map.kakao.com/link/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">카카오맵</a>
-            <a href="https://surl.tmap.co.kr/92289352" class="map-app-btn">티맵</a>
+            <!-- 티맵 URI Scheme -->
+            <a href="tmap://search?name=서울중부교회" class="map-app-btn">티맵</a>
         </div>
 
         <div class="location-info">
             <div>
                 <strong>지하철</strong> 
-                <!-- [수정] 텍스트 변경 & 배지 삭제 -->
                 <span>2호선 상왕십리역 (2번 출구)</span>
             </div>
             <div style="margin-top:12px;">
@@ -564,21 +537,6 @@
             </div>
         </div>
     </section>
-
-    <!-- [추가] 7. Footer (흑백 사진 & 마무리) -->
-    <footer class="footer-section">
-        <!-- 흑백 사진 자리 (임시로 갤러리4 활용) -->
-        <div class="footer-photo-frame">
-            <img src="gallery4.jpg" class="footer-photo" onerror="this.src='https://via.placeholder.com/120x150/eee?text=Photo'">
-        </div>
-        <div class="footer-msg">
-            저희 두 사람, 예쁘게 잘 살겠습니다.<br>
-            감사합니다.
-        </div>
-        <div style="font-size:0.75rem; color:#bbb;">
-            Copyright 2026. Jaeryong & Jihye. All rights reserved.
-        </div>
-    </footer>
 
 </div>
 
