@@ -92,35 +92,38 @@
             font-weight: 300; line-height: 2.4;
         }
         
-        /* 성경 구절 박스 */
+        /* [수정] 성경 구절 박스: 배경 제거 및 인용구 강조 */
         .bible-box {
-            background-color: #fbf7f2;
-            padding: 35px 20px;
+            /* background-color 제거 */
+            padding: 20px 10px; 
             margin-bottom: 40px;
-            border-radius: 8px;
             position: relative;
+            display: inline-block; /* 텍스트 너비에 맞게 */
         }
         .bible-box::before {
             content: '❝';
             font-family: serif;
             position: absolute;
-            top: 10px; left: 20px;
-            font-size: 2rem;
+            top: -15px; left: -15px; /* 위치 조정 */
+            font-size: 3rem; /* 크기 키움 */
             color: var(--accent-color);
-            opacity: 0.3;
+            opacity: 0.25; /* 은은하게 */
+            line-height: 1;
         }
         .bible-box::after {
             content: '❞';
             font-family: serif;
             position: absolute;
-            bottom: -10px; right: 20px;
-            font-size: 2rem;
+            bottom: -25px; right: -15px; /* 위치 조정 */
+            font-size: 3rem; /* 크기 키움 */
             color: var(--accent-color);
-            opacity: 0.3;
+            opacity: 0.25; /* 은은하게 */
+            line-height: 1;
         }
         .bible-verse {
             margin-top: 5px;
             color: #555; font-style: italic; font-size: 0.95rem;
+            position: relative; z-index: 1; /* 따옴표 위에 글씨 오게 */
         }
         .bible-verse span {
             display: block; margin-top: 10px;
@@ -398,7 +401,7 @@
     <section class="fade-in-section">
         <div class="section-title">INVITATION</div>
         <div class="invitation-text">
-            <!-- [수정] 성경구절 박스 (따옴표 완성) -->
+            <!-- [수정] 성경구절 박스 (배경 제거, 인용구 강조) -->
             <div class="bible-box">
                 <div class="bible-verse">
                     "나는 나의 사랑하는 자에게 속하였구나<br>
@@ -481,11 +484,10 @@
             <div id="daumRoughmapContainer1763972596126" class="root_daum_roughmap root_daum_roughmap_landing"></div>
         </div>
         
-        <!-- [수정] 티맵 버튼 (앱 연동) -->
+        <!-- 지도 앱 버튼 -->
         <div class="map-btn-group">
             <a href="https://map.naver.com/p/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">네이버 지도</a>
             <a href="https://map.kakao.com/link/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">카카오맵</a>
-            <!-- 티맵 URI Scheme -->
             <a href="tmap://search?name=서울중부교회" class="map-app-btn">티맵</a>
         </div>
 
