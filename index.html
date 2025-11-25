@@ -633,15 +633,15 @@
         .swipe-guide {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 10005; pointer-events: none;
-            color: #fff; font-size: 1.2rem; text-align: center;
+            color: rgba(255,255,255,0.9); font-size: 0.95rem; text-align: center;
             opacity: 0; animation: swipeHint 2.5s ease-in-out;
+            letter-spacing: 1px;
+            font-family: 'Noto Sans KR', sans-serif;
         }
-        .swipe-guide .hand-icon { font-size: 3rem; display: block; margin-bottom: 10px; }
         @keyframes swipeHint {
-            0% { opacity: 0; transform: translate(-50%, -50%) translateX(0); }
+            0% { opacity: 0; }
             20% { opacity: 1; }
-            50% { transform: translate(-50%, -50%) translateX(-30px); }
-            80% { transform: translate(-50%, -50%) translateX(30px); opacity: 1; }
+            80% { opacity: 1; }
             100% { opacity: 0; }
         }
 
@@ -740,7 +740,7 @@
             <p class="photo-caption">2026. 02. 07</p>
         </div>
 
-        <div class="wedding-date-main">Saturday, February 7th, 2026 PM 12:30</div>
+        <div class="wedding-date-main">2026년 2월 7일 토요일 오후 12시 30분</div>
         <div style="font-size: 1rem; color:#666;">서울 중부교회</div>
 
         <div class="scroll-indicator">
@@ -920,7 +920,7 @@
                         <span class="bank-name">KEB하나 (이재룡)</span>
                         <span class="bank-num">178-910357-82007</span>
                     </div>
-                    <button class="btn-copy" onclick="copy(this, '178-910357-82007')">복사</button>
+                    <button aria-label="계좌번호 복사" class="btn-copy" onclick="copy(this, '178-910357-82007')">복사</button>
                 </div>
             </div>
         </div>
@@ -935,7 +935,7 @@
                         <span class="bank-name">신협 (문지혜)</span>
                         <span class="bank-num">010-2938-2104</span>
                     </div>
-                    <button class="btn-copy" onclick="copy(this, '010-2938-2104')">복사</button>
+                    <button aria-label="계좌번호 복사" class="btn-copy" onclick="copy(this, '010-2938-2104')">복사</button>
                 </div>
             </div>
         </div>
@@ -978,7 +978,6 @@
     <div class="modal-nav-btn modal-prev" onclick="moveSlide(-1)">&#10094;</div>
     <div class="modal-nav-btn modal-next" onclick="moveSlide(1)">&#10095;</div>
     <div id="swipeGuide" class="swipe-guide">
-        <span class="hand-icon">👆</span>
         좌우로 넘겨보세요
     </div>
     <div class="modal-slider-box" id="modalSliderBox"></div>
