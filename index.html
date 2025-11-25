@@ -602,22 +602,40 @@
         .img-modal {
             display: none; position: fixed; z-index: 9999;
             left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.95); touch-action: pan-y;
+            background-color: rgba(0,0,0,0.95);
         }
         .modal-slider-box {
             position: absolute; top: 50%; left: 0; transform: translateY(-50%);
             width: 100%; height: 80vh; display: flex;
             overflow-x: auto; overflow-y: hidden;
-            scroll-snap-type: x mandatory; scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; scrollbar-width: none;
+            scroll-snap-type: x mandatory; 
+            -webkit-overflow-scrolling: touch; 
+            scrollbar-width: none;
         }
         .modal-slider-box::-webkit-scrollbar { display: none; }
-        .modal-slide {
-            flex: 0 0 100%; width: 100%; height: 100%;
-            scroll-snap-align: center; display: flex;
-            justify-content: center; align-items: center;
+        .modal-slider-box.is-zoomed {
+            overflow: hidden;
         }
-        .modal-slide img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .modal-slide {
+            flex: 0 0 100%; 
+            width: 100%; 
+            min-width: 100%;
+            height: 100%;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+            display: flex;
+            justify-content: center; align-items: center;
+            overflow: hidden;
+            touch-action: pan-x pinch-zoom;
+        }
+        .modal-slide img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+            transition: transform 0.1s ease-out;
+            transform-origin: center center;
+            touch-action: pinch-zoom;
+        }
 
         .close-img-modal {
             position: absolute; top: 15px; right: 15px; color: #fff; font-size: 40px;
@@ -740,7 +758,7 @@
             <p class="photo-caption">2026. 02. 07</p>
         </div>
 
-        <div class="wedding-date-main">2026년 2월 7일 토요일 오후 12시 30분</div>
+        <div class="wedding-date-main">오후 12시 30분</div>
         <div style="font-size: 1rem; color:#666;">서울 중부교회</div>
 
         <div class="scroll-indicator">
@@ -1252,19 +1270,90 @@ END:VCALENDAR`;
     const sliderBox = document.getElementById("modalSliderBox");
     let isSliderInit = false;
 
+    // 핀치 줌 관련 변수
+    let currentScale = 1;
+    let currentImg = null;
+    let initialDistance = 0;
+    let lastScale = 1;
+
     function initGallerySlider() {
         if (isSliderInit) return;
         const allImgs = document.querySelectorAll('.gallery-grid img'); 
-        allImgs.forEach(img => {
+        allImgs.forEach((img, index) => {
             const slide = document.createElement('div');
             slide.className = 'modal-slide';
+            slide.dataset.index = index;
             const newImg = document.createElement('img');
             newImg.src = img.src;
             newImg.alt = img.alt;
+            
+            // 핀치 줌 이벤트 추가
+            setupPinchZoom(newImg, slide);
+            
             slide.appendChild(newImg);
             sliderBox.appendChild(slide);
         });
         isSliderInit = true;
+    }
+
+    function setupPinchZoom(img, slide) {
+        let scale = 1;
+        let startDistance = 0;
+        let startScale = 1;
+        
+        slide.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                startDistance = getDistance(e.touches[0], e.touches[1]);
+                startScale = scale;
+                sliderBox.classList.add('is-zoomed');
+            }
+        }, { passive: false });
+        
+        slide.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const currentDistance = getDistance(e.touches[0], e.touches[1]);
+                scale = Math.min(Math.max(startScale * (currentDistance / startDistance), 1), 4);
+                img.style.transform = `scale(${scale})`;
+                
+                if (scale > 1) {
+                    sliderBox.classList.add('is-zoomed');
+                }
+            }
+        }, { passive: false });
+        
+        slide.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                if (scale <= 1.1) {
+                    scale = 1;
+                    img.style.transform = 'scale(1)';
+                    sliderBox.classList.remove('is-zoomed');
+                }
+            }
+        });
+        
+        // 더블탭으로 줌 리셋
+        let lastTap = 0;
+        slide.addEventListener('touchend', (e) => {
+            if (e.touches.length === 0 && e.changedTouches.length === 1) {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault();
+                    scale = 1;
+                    img.style.transform = 'scale(1)';
+                    sliderBox.classList.remove('is-zoomed');
+                }
+                lastTap = currentTime;
+            }
+        });
+    }
+
+    function getDistance(touch1, touch2) {
+        const dx = touch1.clientX - touch2.clientX;
+        const dy = touch1.clientY - touch2.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     function openImgModal(index) {
@@ -1287,10 +1376,22 @@ END:VCALENDAR`;
     function closeImgModal() { 
         modal.style.display = "none"; 
         document.body.style.overflow = '';
+        
+        // 모든 이미지 줌 리셋
+        document.querySelectorAll('.modal-slide img').forEach(img => {
+            img.style.transform = 'scale(1)';
+        });
+        sliderBox.classList.remove('is-zoomed');
     }
     
     function moveSlide(dir) {
-        sliderBox.scrollBy({ left: sliderBox.clientWidth * dir, behavior: 'smooth' });
+        // 줌 상태가 아닐 때만 슬라이드 이동
+        if (!sliderBox.classList.contains('is-zoomed')) {
+            const slideWidth = sliderBox.clientWidth;
+            const currentScroll = sliderBox.scrollLeft;
+            const targetScroll = Math.round(currentScroll / slideWidth) * slideWidth + (slideWidth * dir);
+            sliderBox.scrollTo({ left: targetScroll, behavior: 'smooth' });
+        }
     }
 
     // ESC 키로 모달 닫기
