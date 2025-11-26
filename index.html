@@ -42,13 +42,13 @@
 
         /* --- [CSS-only 꽃잎 효과] --- */
         .petals-container {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
             overflow: hidden;
         }
 
@@ -666,13 +666,13 @@
         }
         .map-app-btn {
             flex: 1; padding: 12px 0; border-radius: 25px;
-            text-decoration: none; font-size: 0.85rem; color: #444;
+            text-decoration: none; font-size: 0.85rem; color: #888;
             background: #fff; border: 1px solid var(--accent-light);
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s;
             font-family: 'Noto Sans KR', sans-serif;
         }
-        .map-app-btn:hover { background: var(--bg-soft); border-color: var(--accent-color); }
+        .map-app-btn:hover { background: var(--bg-soft); border-color: var(--accent-color); color: #666; }
 
         .location-info {
             text-align: left; padding: 25px 15px;
@@ -708,11 +708,11 @@
             border: 1px solid var(--accent-light);
             border-radius: 30px;
             font-size: 0.95rem;
-            color: var(--text-color);
+            color: #888;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Noto Sans KR', sans-serif;
-            font-weight: 500;
+            font-weight: 400;
         }
 
         .account-btn:hover {
@@ -1108,25 +1108,6 @@
 </head>
 <body>
 
-<!-- CSS-only 꽃잎 효과 -->
-<div class="petals-container">
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-</div>
-
 <!-- ========== 인트로 오버레이 ========== -->
 <div class="intro-overlay" id="introOverlay">
     <div class="intro-envelope" id="introEnvelope" onclick="openEnvelope()">
@@ -1158,6 +1139,25 @@
 </nav>
 
 <div class="container">
+
+    <!-- CSS-only 꽃잎 효과 -->
+    <div class="petals-container">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+    </div>
     
     <!-- BGM -->
     <div id="bgmToggle" class="bgm-toggle" onclick="toggleAudio()">
@@ -1325,8 +1325,8 @@
         </div>
         
         <div class="map-btn-group">
-            <a href="https://map.naver.com/p/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">네이버</a>
-            <a href="https://map.kakao.com/link/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">카카오</a>
+            <a href="https://map.naver.com/p/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">네이버 맵</a>
+            <a href="https://map.kakao.com/link/search/서울 성동구 왕십리로 30길 15-1" target="_blank" class="map-app-btn">카카오 맵</a>
             <a href="tmap://search?name=서울중부교회" class="map-app-btn">티맵</a>
         </div>
 
@@ -1352,7 +1352,7 @@
     <!-- 6. 마음 전하실 곳 - 미니멀 버튼 스타일 -->
     <section id="account" class="fade-in-section account-section">
         <div class="section-title">ACCOUNT</div>
-        <p style="font-size:0.9rem; color:#999; margin-bottom:30px;">마음 전하실 곳</p>
+        <p style="font-size:0.9rem; color:#999; margin-bottom:30px;">소중한 마음 전해주실 곳</p>
         
         <div class="account-btns">
             <button class="account-btn" onclick="openAccountModal('groom')">
