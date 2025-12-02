@@ -1412,6 +1412,12 @@
 
     if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
         Kakao.init(KAKAO_JS_KEY);
+        console.log('Kakao SDK initialized with key:', KAKAO_JS_KEY);
+        console.log('Kakao.isInitialized():', Kakao.isInitialized());
+    } else if (typeof Kakao !== 'undefined') {
+        console.log('Kakao SDK already initialized');
+    } else {
+        console.error('Kakao SDK not loaded');
     }
 
     // ========== 인트로 애니메이션 (자동 열림 포함) ==========
@@ -1484,34 +1490,50 @@
 
     // ========== 카카오 공유 ==========
     function shareKakao() {
+        console.log('shareKakao() called');
+        console.log('Kakao defined:', typeof Kakao !== 'undefined');
+        console.log('Kakao initialized:', typeof Kakao !== 'undefined' && Kakao.isInitialized());
+
         if (typeof Kakao === 'undefined' || !Kakao.isInitialized()) {
             alert('카카오톡 공유를 사용하려면 카카오 개발자 키 설정이 필요합니다.\n링크 복사로 대체합니다.');
             copyLink();
             return;
         }
 
-        Kakao.Share.sendDefault({
-            objectType: 'feed',
-            content: {
-                title: '이재룡 ♡ 문지혜 결혼식에 초대합니다',
-                description: '2026년 2월 7일 토요일 오후 12시 30분\n서울 중부교회',
-                imageUrl: window.location.origin + '/main.jpg',
-                link: {
-                    mobileWebUrl: window.location.href,
-                    webUrl: window.location.href
-                }
-            },
-            buttons: [
-                {
-                    title: '청첩장 보기',
+        const shareUrl = window.location.href;
+        const imageUrl = window.location.origin + window.location.pathname + 'main.jpg';
+
+        console.log('Sharing with URL:', shareUrl);
+        console.log('Image URL:', imageUrl);
+
+        try {
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '이재룡 ♡ 문지혜 결혼식에 초대합니다',
+                    description: '2026년 2월 7일 토요일 오후 12시 30분\n서울 중부교회',
+                    imageUrl: imageUrl,
                     link: {
-                        mobileWebUrl: window.location.href,
-                        webUrl: window.location.href
+                        mobileWebUrl: shareUrl,
+                        webUrl: shareUrl
                     }
-                }
-            ]
-        });
-        
+                },
+                buttons: [
+                    {
+                        title: '청첩장 보기',
+                        link: {
+                            mobileWebUrl: shareUrl,
+                            webUrl: shareUrl
+                        }
+                    }
+                ]
+            });
+            console.log('Kakao share called successfully');
+        } catch (error) {
+            console.error('Kakao share error:', error);
+            alert('카카오톡 공유 중 오류가 발생했습니다.\n' + error.message);
+        }
+
         closePopups('all');
     }
 
