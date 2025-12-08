@@ -992,8 +992,8 @@
             will-change: transform;
             user-select: none;
             -webkit-user-drag: none;
-            touch-action: pan-y pan-x;
-            pointer-events: auto;
+            touch-action: none;
+            pointer-events: none;
         }
 
         .close-img-modal {
@@ -1720,7 +1720,7 @@
 
     function initGallerySlider() {
         if (isSliderInit) return;
-        const allImgs = document.querySelectorAll('.gallery-grid img'); 
+        const allImgs = document.querySelectorAll('.gallery-grid img');
         allImgs.forEach((img, index) => {
             const slide = document.createElement('div');
             slide.className = 'modal-slide';
@@ -1729,7 +1729,18 @@
             newImg.src = img.src;
             newImg.alt = img.alt;
 
-            // setupPinchZoom(newImg, slide); // Disabled zoom functionality
+            // Prevent pinch zoom on the image
+            newImg.addEventListener('touchstart', function(e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            newImg.addEventListener('touchmove', function(e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
 
             slide.appendChild(newImg);
             sliderBox.appendChild(slide);
