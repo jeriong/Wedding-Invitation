@@ -579,11 +579,11 @@
         
         /* 스켈레톤 로딩 */
         .gallery-img {
-            width: 100%; 
+            width: 100%;
             aspect-ratio: 1/1;
-            object-fit: cover; 
-            display: none; 
-            cursor: pointer; 
+            object-fit: cover;
+            display: none;
+            cursor: default;
             background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: skeleton 1.5s infinite;
@@ -1246,17 +1246,17 @@
         <div class="section-title">GALLERY</div>
         <div class="gallery-container">
             <div class="gallery-grid" id="galleryGrid">
-                <img src="gallery1.jpg" alt="웨딩 사진 1" class="gallery-img visible" loading="lazy" onclick="openImgModal(0)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=1'">
-                <img src="gallery2.jpg" alt="웨딩 사진 2" class="gallery-img visible" loading="lazy" onclick="openImgModal(1)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=2'">
-                <img src="gallery3.jpg" alt="웨딩 사진 3" class="gallery-img visible" loading="lazy" onclick="openImgModal(2)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=3'">
-                <img src="gallery4.jpg" alt="웨딩 사진 4" class="gallery-img visible" loading="lazy" onclick="openImgModal(3)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=4'">
-                <img src="gallery5.jpg" alt="웨딩 사진 5" class="gallery-img visible" loading="lazy" onclick="openImgModal(4)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=5'">
-                <img src="gallery6.jpg" alt="웨딩 사진 6" class="gallery-img visible" loading="lazy" onclick="openImgModal(5)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=6'">
-                
-                <img src="gallery7.jpg" alt="웨딩 사진 7" class="gallery-img hidden-img" loading="lazy" onclick="openImgModal(6)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=7'">
-                <img src="gallery8.jpg" alt="웨딩 사진 8" class="gallery-img hidden-img" loading="lazy" onclick="openImgModal(7)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=8'">
-                <img src="gallery9.jpg" alt="웨딩 사진 9" class="gallery-img hidden-img" loading="lazy" onclick="openImgModal(8)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=9'">
-                <img src="gallery10.jpg" alt="웨딩 사진 10" class="gallery-img hidden-img" loading="lazy" onclick="openImgModal(9)" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=10'">
+                <img src="gallery1.jpg" alt="웨딩 사진 1" class="gallery-img visible" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=1'">
+                <img src="gallery2.jpg" alt="웨딩 사진 2" class="gallery-img visible" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=2'">
+                <img src="gallery3.jpg" alt="웨딩 사진 3" class="gallery-img visible" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=3'">
+                <img src="gallery4.jpg" alt="웨딩 사진 4" class="gallery-img visible" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=4'">
+                <img src="gallery5.jpg" alt="웨딩 사진 5" class="gallery-img visible" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=5'">
+                <img src="gallery6.jpg" alt="웨딩 사진 6" class="gallery-img visible" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=6'">
+
+                <img src="gallery7.jpg" alt="웨딩 사진 7" class="gallery-img hidden-img" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=7'">
+                <img src="gallery8.jpg" alt="웨딩 사진 8" class="gallery-img hidden-img" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=8'">
+                <img src="gallery9.jpg" alt="웨딩 사진 9" class="gallery-img hidden-img" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=9'">
+                <img src="gallery10.jpg" alt="웨딩 사진 10" class="gallery-img hidden-img" loading="lazy" onerror="this.src='https://via.placeholder.com/300/f5f0e8/c9a87c?text=10'">
             </div>
             <div id="moreBtn" class="btn-more-gallery" onclick="showMoreGallery()">더보기 ∨</div>
         </div>
