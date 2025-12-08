@@ -956,6 +956,8 @@
             display: none; position: fixed; z-index: 9999;
             left: 0; top: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.95);
+            touch-action: pan-x;
+            -ms-touch-action: pan-x;
         }
         .modal-slider-box {
             position: absolute; top: 50%; left: 0; transform: translateY(-50%);
@@ -964,7 +966,8 @@
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            touch-action: pan-x pan-y;
+            touch-action: pan-x;
+            -ms-touch-action: pan-x;
         }
         .modal-slider-box::-webkit-scrollbar { display: none; }
         .modal-slider-box.is-zoomed {
@@ -982,7 +985,8 @@
             justify-content: center; align-items: center;
             overflow: hidden;
             position: relative;
-            touch-action: pan-x pan-y;
+            touch-action: pan-x;
+            -ms-touch-action: pan-x;
         }
         .modal-slide img {
             max-width: 100%;
@@ -991,8 +995,10 @@
             transition: none;
             will-change: transform;
             user-select: none;
+            -webkit-user-select: none;
             -webkit-user-drag: none;
-            touch-action: none;
+            touch-action: pan-x;
+            -ms-touch-action: pan-x;
             pointer-events: none;
         }
 
@@ -1717,6 +1723,75 @@
     const modal = document.getElementById("imgModal");
     const sliderBox = document.getElementById("modalSliderBox");
     let isSliderInit = false;
+    let lastTapTime = 0;
+
+    // Block all zoom gestures on the modal
+    function setupModalZoomBlock() {
+        // Block pinch zoom (multi-touch)
+        modal.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            // Block double tap zoom
+            const now = Date.now();
+            if (now - lastTapTime < 300) {
+                e.preventDefault();
+            }
+            lastTapTime = now;
+        }, { passive: false, capture: true });
+
+        modal.addEventListener('touchmove', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, { passive: false, capture: true });
+
+        // iOS Safari gesture events
+        modal.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false, capture: true });
+
+        modal.addEventListener('gesturechange', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false, capture: true });
+
+        modal.addEventListener('gestureend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false, capture: true });
+
+        // Also block on document level when modal is open
+        document.addEventListener('touchstart', function(e) {
+            if (modal.style.display === 'block' && e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchmove', function(e) {
+            if (modal.style.display === 'block' && e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('gesturestart', function(e) {
+            if (modal.style.display === 'block') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('gesturechange', function(e) {
+            if (modal.style.display === 'block') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    }
+
+    // Initialize zoom blocking
+    setupModalZoomBlock();
 
     function initGallerySlider() {
         if (isSliderInit) return;
@@ -1728,183 +1803,10 @@
             const newImg = document.createElement('img');
             newImg.src = img.src;
             newImg.alt = img.alt;
-
-            // Prevent pinch zoom on the image
-            newImg.addEventListener('touchstart', function(e) {
-                if (e.touches.length > 1) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-
-            newImg.addEventListener('touchmove', function(e) {
-                if (e.touches.length > 1) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-
             slide.appendChild(newImg);
             sliderBox.appendChild(slide);
         });
         isSliderInit = true;
-    }
-
-    function setupPinchZoom(img, slide) {
-        let scale = 1;
-        let posX = 0;
-        let posY = 0;
-        let startDistance = 0;
-        let startScale = 1;
-        let startX = 0;
-        let startY = 0;
-        let startPosX = 0;
-        let startPosY = 0;
-        let isPinching = false;
-        let isPanning = false;
-        let pinchCenterX = 0;
-        let pinchCenterY = 0;
-
-        function updateTransform() {
-            img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-        }
-
-        function getDistance(t1, t2) {
-            return Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-        }
-
-        function getCenter(t1, t2) {
-            return {
-                x: (t1.clientX + t2.clientX) / 2,
-                y: (t1.clientY + t2.clientY) / 2
-            };
-        }
-
-        slide.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 2) {
-                e.preventDefault();
-                isPinching = true;
-                startDistance = getDistance(e.touches[0], e.touches[1]);
-                startScale = scale;
-                
-                const center = getCenter(e.touches[0], e.touches[1]);
-                const rect = img.getBoundingClientRect();
-                pinchCenterX = center.x - rect.left - rect.width / 2;
-                pinchCenterY = center.y - rect.top - rect.height / 2;
-                
-                startPosX = posX;
-                startPosY = posY;
-                
-                sliderBox.classList.add('is-zoomed');
-            } else if (e.touches.length === 1 && scale > 1) {
-                isPanning = true;
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-                startPosX = posX;
-                startPosY = posY;
-            }
-        }, { passive: false });
-
-        slide.addEventListener('touchmove', (e) => {
-            if (isPinching && e.touches.length === 2) {
-                e.preventDefault();
-                const currentDistance = getDistance(e.touches[0], e.touches[1]);
-                const newScale = Math.min(Math.max(startScale * (currentDistance / startDistance), 1), 4);
-                
-                const scaleDiff = newScale - startScale;
-                posX = startPosX - (pinchCenterX * scaleDiff / startScale);
-                posY = startPosY - (pinchCenterY * scaleDiff / startScale);
-                
-                scale = newScale;
-                
-                if (scale > 1) {
-                    sliderBox.classList.add('is-zoomed');
-                }
-                
-                updateTransform();
-            } else if (isPanning && e.touches.length === 1 && scale > 1) {
-                e.preventDefault();
-                const deltaX = e.touches[0].clientX - startX;
-                const deltaY = e.touches[0].clientY - startY;
-                
-                const rect = img.getBoundingClientRect();
-                const maxX = (rect.width * scale - rect.width) / 2;
-                const maxY = (rect.height * scale - rect.height) / 2;
-                
-                posX = Math.max(-maxX, Math.min(maxX, startPosX + deltaX));
-                posY = Math.max(-maxY, Math.min(maxY, startPosY + deltaY));
-                
-                updateTransform();
-            }
-        }, { passive: false });
-
-        slide.addEventListener('touchend', (e) => {
-            if (e.touches.length < 2) {
-                isPinching = false;
-            }
-            if (e.touches.length === 0) {
-                isPanning = false;
-                
-                if (scale <= 1.05) {
-                    scale = 1;
-                    posX = 0;
-                    posY = 0;
-                    updateTransform();
-                    sliderBox.classList.remove('is-zoomed');
-                }
-            }
-        });
-
-        let lastTap = 0;
-        let lastTapX = 0;
-        let lastTapY = 0;
-        
-        slide.addEventListener('touchend', (e) => {
-            if (e.touches.length === 0 && e.changedTouches.length === 1) {
-                const currentTime = Date.now();
-                const tapX = e.changedTouches[0].clientX;
-                const tapY = e.changedTouches[0].clientY;
-                
-                if (currentTime - lastTap < 300 && 
-                    Math.abs(tapX - lastTapX) < 30 && 
-                    Math.abs(tapY - lastTapY) < 30) {
-                    e.preventDefault();
-                    
-                    if (scale > 1) {
-                        scale = 1;
-                        posX = 0;
-                        posY = 0;
-                        sliderBox.classList.remove('is-zoomed');
-                    } else {
-                        const rect = img.getBoundingClientRect();
-                        const centerX = tapX - rect.left - rect.width / 2;
-                        const centerY = tapY - rect.top - rect.height / 2;
-                        
-                        scale = 2;
-                        posX = -centerX;
-                        posY = -centerY;
-                        sliderBox.classList.add('is-zoomed');
-                    }
-                    
-                    img.style.transition = 'transform 0.3s ease';
-                    updateTransform();
-                    setTimeout(() => {
-                        img.style.transition = 'none';
-                    }, 300);
-                }
-                
-                lastTap = currentTime;
-                lastTapX = tapX;
-                lastTapY = tapY;
-            }
-        });
-        
-        const resetZoom = () => {
-            scale = 1;
-            posX = 0;
-            posY = 0;
-            updateTransform();
-        };
-        
-        slide.resetZoom = resetZoom;
     }
 
     function openImgModal(index) {
@@ -1924,25 +1826,16 @@
         }, 10);
     }
     
-    function closeImgModal() { 
-        modal.style.display = "none"; 
+    function closeImgModal() {
+        modal.style.display = "none";
         document.body.style.overflow = '';
-        
-        document.querySelectorAll('.modal-slide').forEach(slide => {
-            if (slide.resetZoom) slide.resetZoom();
-            const img = slide.querySelector('img');
-            if (img) img.style.transform = 'translate(0px, 0px) scale(1)';
-        });
-        sliderBox.classList.remove('is-zoomed');
     }
-    
+
     function moveSlide(dir) {
-        if (!sliderBox.classList.contains('is-zoomed')) {
-            const slideWidth = sliderBox.clientWidth;
-            const currentScroll = sliderBox.scrollLeft;
-            const targetScroll = Math.round(currentScroll / slideWidth) * slideWidth + (slideWidth * dir);
-            sliderBox.scrollTo({ left: targetScroll, behavior: 'smooth' });
-        }
+        const slideWidth = sliderBox.clientWidth;
+        const currentScroll = sliderBox.scrollLeft;
+        const targetScroll = Math.round(currentScroll / slideWidth) * slideWidth + (slideWidth * dir);
+        sliderBox.scrollTo({ left: targetScroll, behavior: 'smooth' });
     }
 
     // ESC 키 및 화살표 키로 모달 제어
