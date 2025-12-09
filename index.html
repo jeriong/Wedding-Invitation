@@ -1016,6 +1016,52 @@
             background: #eee;
         }
 
+        /* 부모님 계좌 접이식 */
+        .account-parents-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 0;
+            margin-top: 5px;
+            background: transparent;
+            border: none;
+            border-top: 1px dashed #e8e8e8;
+            font-size: 0.9rem;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .account-parents-toggle:hover {
+            color: var(--accent-color);
+        }
+
+        .account-parents-toggle svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .account-parents-toggle.open svg {
+            transform: rotate(180deg);
+        }
+
+        .account-parents-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .account-parents-list.open {
+            max-height: 200px;
+        }
+
         /* --- [공통 UI] --- */
         .toast-msg {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
@@ -1223,10 +1269,11 @@
         .swipe-guide {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 10005; pointer-events: none;
-            color: rgba(255,255,255,0.9); font-size: 0.95rem; text-align: center;
+            color: rgba(255,255,255,0.9); font-size: 0.9rem; text-align: center;
             opacity: 0; animation: swipeHint 2.5s ease-in-out;
-            letter-spacing: 1px;
-            font-family: 'Noto Sans KR', sans-serif;
+            letter-spacing: 3px;
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 300;
         }
         @keyframes swipeHint {
             0% { opacity: 0; }
@@ -1620,6 +1667,7 @@
 <div class="account-modal" id="groomAccountModal" onclick="closeAccountModal(event, 'groom')">
     <div class="account-modal-content" onclick="event.stopPropagation()">
         <div class="account-modal-title">신랑측 계좌번호</div>
+        <!-- 신랑 계좌 -->
         <div class="account-item">
             <div class="account-info">
                 <div class="account-bank">KEB하나은행</div>
@@ -1627,6 +1675,17 @@
                 <div class="account-name">이재룡</div>
             </div>
             <button class="btn-copy-account" onclick="copyAccount(this, '17891035782007')">복사</button>
+        </div>
+        <!-- 부모님 계좌 토글 버튼 -->
+        <button class="account-parents-toggle" id="groomParentsToggle" onclick="toggleParentsAccount('groom')">
+            신랑 부모님 계좌
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <!-- 부모님 계좌 목록 (접이식) - 추후 추가 예정 -->
+        <div class="account-parents-list" id="groomParentsList">
+            <div class="account-item" style="justify-content: center; color: #999; font-size: 0.9rem;">
+                준비 중입니다
+            </div>
         </div>
         <button class="account-modal-close" onclick="closeAccountModal('all', 'groom')">닫기</button>
     </div>
@@ -1636,22 +1695,7 @@
 <div class="account-modal" id="brideAccountModal" onclick="closeAccountModal(event, 'bride')">
     <div class="account-modal-content" onclick="event.stopPropagation()">
         <div class="account-modal-title">신부측 계좌번호</div>
-        <div class="account-item">
-            <div class="account-info">
-                <div class="account-bank">신협</div>
-                <div class="account-number">132-052-613089</div>
-                <div class="account-name">문경철</div>
-            </div>
-            <button class="btn-copy-account" onclick="copyAccount(this, '132052613089')">복사</button>
-        </div>
-        <div class="account-item">
-            <div class="account-info">
-                <div class="account-bank">신협</div>
-                <div class="account-number">132-058-467923</div>
-                <div class="account-name">박숙희</div>
-            </div>
-            <button class="btn-copy-account" onclick="copyAccount(this, '132058467923')">복사</button>
-        </div>
+        <!-- 신부 계좌 -->
         <div class="account-item">
             <div class="account-info">
                 <div class="account-bank">신한</div>
@@ -1659,6 +1703,30 @@
                 <div class="account-name">문지혜</div>
             </div>
             <button class="btn-copy-account" onclick="copyAccount(this, '110472157197')">복사</button>
+        </div>
+        <!-- 부모님 계좌 토글 버튼 -->
+        <button class="account-parents-toggle" id="brideParentsToggle" onclick="toggleParentsAccount('bride')">
+            신부 부모님 계좌
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <!-- 부모님 계좌 목록 (접이식) -->
+        <div class="account-parents-list" id="brideParentsList">
+            <div class="account-item">
+                <div class="account-info">
+                    <div class="account-bank">신협</div>
+                    <div class="account-number">132-052-613089</div>
+                    <div class="account-name">문경철</div>
+                </div>
+                <button class="btn-copy-account" onclick="copyAccount(this, '132052613089')">복사</button>
+            </div>
+            <div class="account-item">
+                <div class="account-info">
+                    <div class="account-bank">신협</div>
+                    <div class="account-number">132-058-467923</div>
+                    <div class="account-name">박숙희</div>
+                </div>
+                <button class="btn-copy-account" onclick="copyAccount(this, '132058467923')">복사</button>
+            </div>
         </div>
         <button class="account-modal-close" onclick="closeAccountModal('all', 'bride')">닫기</button>
     </div>
@@ -1951,6 +2019,14 @@
                 btn.classList.remove('copied');
             }, 2000);
         });
+    }
+
+    // 부모님 계좌 토글 (신랑/신부 공통)
+    function toggleParentsAccount(type) {
+        const toggle = document.getElementById(type + 'ParentsToggle');
+        const list = document.getElementById(type + 'ParentsList');
+        toggle.classList.toggle('open');
+        list.classList.toggle('open');
     }
 
     // ========== 복사 기능 ==========
