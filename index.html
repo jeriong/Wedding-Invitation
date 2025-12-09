@@ -1667,6 +1667,7 @@
 <div class="account-modal" id="groomAccountModal" onclick="closeAccountModal(event, 'groom')">
     <div class="account-modal-content" onclick="event.stopPropagation()">
         <div class="account-modal-title">신랑측 계좌번호</div>
+        <!-- 신랑 계좌 -->
         <div class="account-item">
             <div class="account-info">
                 <div class="account-bank">KEB하나은행</div>
@@ -1674,6 +1675,17 @@
                 <div class="account-name">이재룡</div>
             </div>
             <button class="btn-copy-account" onclick="copyAccount(this, '17891035782007')">복사</button>
+        </div>
+        <!-- 부모님 계좌 토글 버튼 -->
+        <button class="account-parents-toggle" id="groomParentsToggle" onclick="toggleParentsAccount('groom')">
+            신랑 부모님 계좌
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <!-- 부모님 계좌 목록 (접이식) - 추후 추가 예정 -->
+        <div class="account-parents-list" id="groomParentsList">
+            <div class="account-item" style="justify-content: center; color: #999; font-size: 0.9rem;">
+                준비 중입니다
+            </div>
         </div>
         <button class="account-modal-close" onclick="closeAccountModal('all', 'groom')">닫기</button>
     </div>
@@ -1693,7 +1705,7 @@
             <button class="btn-copy-account" onclick="copyAccount(this, '110472157197')">복사</button>
         </div>
         <!-- 부모님 계좌 토글 버튼 -->
-        <button class="account-parents-toggle" id="brideParentsToggle" onclick="toggleParentsAccount()">
+        <button class="account-parents-toggle" id="brideParentsToggle" onclick="toggleParentsAccount('bride')">
             신부 부모님 계좌
             <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
@@ -2009,10 +2021,10 @@
         });
     }
 
-    // 신부 부모님 계좌 토글
-    function toggleParentsAccount() {
-        const toggle = document.getElementById('brideParentsToggle');
-        const list = document.getElementById('brideParentsList');
+    // 부모님 계좌 토글 (신랑/신부 공통)
+    function toggleParentsAccount(type) {
+        const toggle = document.getElementById(type + 'ParentsToggle');
+        const list = document.getElementById(type + 'ParentsList');
         toggle.classList.toggle('open');
         list.classList.toggle('open');
     }
