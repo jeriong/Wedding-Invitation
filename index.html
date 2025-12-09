@@ -598,62 +598,32 @@
 
         .scroll-indicator {
             margin-top: 40px;
+            animation: bounce 2s infinite;
         }
 
         .scroll-indicator span {
             display: block;
             font-size: 0.7rem;
             color: #bbb;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             letter-spacing: 2px;
             font-family: 'Cormorant Garamond', serif;
         }
 
-        .scroll-hand {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: scrollBounce 2s ease-in-out infinite;
+        .scroll-arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            transform: rotate(45deg);
+            margin: 0 auto;
+            opacity: 0.4;
         }
 
-        .scroll-hand svg {
-            width: 28px;
-            height: 28px;
-            stroke: var(--accent-color);
-            stroke-width: 1.5;
-            fill: none;
-            opacity: 0.6;
-        }
-
-        .scroll-dots {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            margin-top: 8px;
-        }
-
-        .scroll-dots span {
-            width: 4px;
-            height: 4px;
-            background: var(--accent-light);
-            border-radius: 50%;
-            animation: dotFade 1.5s ease-in-out infinite;
-            margin: 0;
-        }
-
-        .scroll-dots span:nth-child(1) { animation-delay: 0s; }
-        .scroll-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .scroll-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes scrollBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(8px); }
-        }
-
-        @keyframes dotFade {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
         /* --- [2. 초대 문구] --- */
@@ -880,61 +850,6 @@
         }
         .map-app-btn:hover { background: var(--bg-soft); border-color: var(--accent-color); color: #666; }
 
-        /* 오시는 길 탭 */
-        .location-tabs {
-            display: flex;
-            margin-top: 25px;
-            border-radius: 30px;
-            background: var(--bg-soft);
-            padding: 4px;
-        }
-
-        .location-tab {
-            flex: 1;
-            padding: 12px 16px;
-            border: none;
-            background: transparent;
-            font-size: 0.9rem;
-            color: #888;
-            cursor: pointer;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .location-tab svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        .location-tab.active {
-            background: #fff;
-            color: var(--text-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .location-tab-content {
-            display: none;
-            animation: tabFadeIn 0.3s ease;
-        }
-
-        .location-tab-content.active {
-            display: block;
-        }
-
-        @keyframes tabFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .location-info {
             text-align: left; padding: 25px 15px;
             background: #fff; font-size: 0.95rem; line-height: 1.8;
@@ -943,63 +858,10 @@
             margin-top: 20px;
         }
         .location-info strong {
-            display: inline-block; width: 70px;
+            display: inline-block; width: 60px;
             color: var(--accent-color); font-weight: 600; vertical-align: top;
         }
-        .location-info span { display: inline-block; width: calc(100% - 75px); color: #444; }
-
-        .location-info-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .location-info-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .location-info-icon {
-            width: 36px;
-            height: 36px;
-            background: var(--bg-soft);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
-        .location-info-icon svg {
-            width: 18px;
-            height: 18px;
-            stroke: var(--accent-color);
-            fill: none;
-            stroke-width: 2;
-        }
-
-        .location-info-text {
-            flex: 1;
-        }
-
-        .location-info-text strong {
-            display: block;
-            width: auto;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
-        }
-
-        .location-info-text span {
-            display: block;
-            width: auto;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .location-info-text small {
-            font-size: 0.8rem;
-            color: #999;
-        }
+        .location-info span { display: inline-block; width: calc(100% - 65px); color: #444; }
 
         /* --- [6. 계좌번호 - 미니멀 버튼 스타일] --- */
         .account-section {
@@ -1521,17 +1383,7 @@
 
         <div class="scroll-indicator">
             <span>SCROLL</span>
-            <div class="scroll-hand">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2C10.9 2 10 2.9 10 4V11.17L8.41 9.59L7 11L12 16L17 11L15.59 9.59L14 11.17V4C14 2.9 13.1 2 12 2Z"/>
-                    <path d="M5 16V18C5 19.66 6.34 21 8 21H16C17.66 21 19 19.66 19 18V16" stroke-linecap="round"/>
-                </svg>
-                <div class="scroll-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
+            <div class="scroll-arrow"></div>
         </div>
     </section>
 
@@ -1701,67 +1553,14 @@
             <a href="tmap://search?name=서울 성동구 왕십리로 30길 15-1" class="map-app-btn">티맵 안내</a>
         </div>
 
-        <!-- 탭 버튼 -->
-        <div class="location-tabs">
-            <button class="location-tab active" onclick="switchLocationTab('transit')">
-                <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="11" x2="20" y2="11"/><line x1="12" y1="3" x2="12" y2="11"/></svg>
-                대중교통
-            </button>
-            <button class="location-tab" onclick="switchLocationTab('car')">
-                <svg viewBox="0 0 24 24"><path d="M5 17a2 2 0 1 0 4 0 2 2 0 1 0-4 0M15 17a2 2 0 1 0 4 0 2 2 0 1 0-4 0"/><path d="M5 17H3v-6l2-5h10l2 5v6h-2M5 17h10"/><line x1="3" y1="11" x2="19" y2="11"/></svg>
-                자가용
-            </button>
-        </div>
-
-        <!-- 대중교통 정보 -->
-        <div class="location-tab-content active" id="transitTab">
-            <div class="location-info">
-                <div class="location-info-item">
-                    <div class="location-info-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
-                    </div>
-                    <div class="location-info-text">
-                        <strong>지하철</strong>
-                        <span>2호선 상왕십리역 2번 출구</span>
-                        <small>도보 약 5분</small>
-                    </div>
-                </div>
-                <div class="location-info-item">
-                    <div class="location-info-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
-                    <div class="location-info-text">
-                        <strong>버스</strong>
-                        <span>141, 145, 148번 등</span>
-                        <small>상왕십리역 하차</small>
-                    </div>
-                </div>
+        <div class="location-info">
+            <div>
+                <strong>지하철</strong>
+                <span>2호선 상왕십리역 2번 출구</span>
             </div>
-        </div>
-
-        <!-- 자가용 정보 -->
-        <div class="location-tab-content" id="carTab">
-            <div class="location-info">
-                <div class="location-info-item">
-                    <div class="location-info-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                    </div>
-                    <div class="location-info-text">
-                        <strong>주차장</strong>
-                        <span>교회당 지하 주차장</span>
-                        <small>무료 주차 가능</small>
-                    </div>
-                </div>
-                <div class="location-info-item">
-                    <div class="location-info-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    </div>
-                    <div class="location-info-text">
-                        <strong>만차 시</strong>
-                        <span>도선어린이공원 공영주차장</span>
-                        <small>도보 약 3분 거리</small>
-                    </div>
-                </div>
+            <div style="margin-top:12px;">
+                <strong>주차</strong>
+                <span>교회당 지하 주차장<br><span style="font-size: 0.8rem; color:#888;">(만차시 도선어린이공원 공영주차장)</span></span>
             </div>
         </div>
     </section>
@@ -2176,28 +1975,6 @@
     const today = new Date().getTime();
     const remainDays = Math.ceil((dday - today) / (1000 * 60 * 60 * 24));
     document.getElementById('d-day').innerText = remainDays > 0 ? remainDays : 'D-Day';
-
-    // ========== 오시는 길 탭 전환 ==========
-    function switchLocationTab(tab) {
-        // 모든 탭 버튼 비활성화
-        document.querySelectorAll('.location-tab').forEach(btn => {
-            btn.classList.remove('active');
-        });
-
-        // 모든 탭 콘텐츠 숨기기
-        document.querySelectorAll('.location-tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
-
-        // 선택된 탭 활성화
-        if (tab === 'transit') {
-            document.querySelector('.location-tab:first-child').classList.add('active');
-            document.getElementById('transitTab').classList.add('active');
-        } else {
-            document.querySelector('.location-tab:last-child').classList.add('active');
-            document.getElementById('carTab').classList.add('active');
-        }
-    }
 
     // ========== 스크롤 관련 ==========
     const sideNav = document.getElementById('sideNav');
