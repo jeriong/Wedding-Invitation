@@ -1681,10 +1681,15 @@
             신랑 부모님 계좌
             <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
-        <!-- 부모님 계좌 목록 (접이식) - 추후 추가 예정 -->
+        <!-- 부모님 계좌 목록 (접이식) -->
         <div class="account-parents-list" id="groomParentsList">
-            <div class="account-item" style="justify-content: center; color: #999; font-size: 0.9rem;">
-                준비 중입니다
+            <div class="account-item">
+                <div class="account-info">
+                    <div class="account-bank">기업은행</div>
+                    <div class="account-number">010-8709-3364</div>
+                    <div class="account-name">김순희</div>
+                </div>
+                <button class="btn-copy-account" onclick="copyAccount(this, '01087093364')">복사</button>
             </div>
         </div>
         <button class="account-modal-close" onclick="closeAccountModal('all', 'groom')">닫기</button>
