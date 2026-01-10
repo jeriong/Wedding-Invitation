@@ -30,6 +30,25 @@
             --accent-light: #e8dcc8;
             --point-color: #b8926a;
             --bg-soft: #faf8f5;
+            --font-scale: 1;
+        }
+
+        /* 큰 폰트 모드 */
+        body.large-font {
+            --font-scale: 1.4;
+        }
+
+        body.large-font * {
+            font-size: calc(1em * var(--font-scale));
+        }
+
+        /* 큰 폰트 모드에서 레이아웃 요소는 폰트 크기 유지 */
+        body.large-font .bgm-toggle,
+        body.large-font .font-toggle,
+        body.large-font svg,
+        body.large-font img,
+        body.large-font .petal {
+            font-size: initial;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -1213,6 +1232,32 @@
             100% { transform: scale(1.5); opacity: 0; }
         }
 
+        /* --- [폰트 크기 토글] --- */
+        .font-toggle {
+            position: absolute; top: 20px; right: 70px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(201, 168, 124, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 50;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        .font-toggle:hover {
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .font-toggle.active {
+            background: rgba(201, 168, 124, 0.2);
+            color: var(--point-color);
+        }
+
         /* 모달 */
         .img-modal {
             display: none; position: fixed; z-index: 9999;
@@ -1410,6 +1455,11 @@
 
 <div class="container">
     
+    <!-- 폰트 크기 토글 -->
+    <div id="fontToggle" class="font-toggle" onclick="toggleFontSize()" title="큰 글자로 보기">
+        <span id="fontToggleText">가</span>
+    </div>
+
     <!-- BGM -->
     <div id="bgmToggle" class="bgm-toggle" onclick="toggleAudio()">
         <svg id="bgmIconMute" viewBox="0 0 24 24">
@@ -1836,9 +1886,62 @@
         }
     }
 
-    // 페이지 로드 시 카운트다운 시작
+    // ========== 폰트 크기 토글 ==========
+    let isLargeFont = false;
+
+    function toggleFontSize() {
+        isLargeFont = !isLargeFont;
+        updateFontSize();
+
+        // localStorage에 저장
+        localStorage.setItem('largeFont', isLargeFont);
+
+        // URL 파라미터도 업데이트 (선택사항)
+        const url = new URL(window.location);
+        if (isLargeFont) {
+            url.searchParams.set('largeFont', 'true');
+        } else {
+            url.searchParams.delete('largeFont');
+        }
+        window.history.replaceState({}, '', url);
+    }
+
+    function updateFontSize() {
+        const body = document.body;
+        const fontToggle = document.getElementById('fontToggle');
+        const fontToggleText = document.getElementById('fontToggleText');
+
+        if (isLargeFont) {
+            body.classList.add('large-font');
+            fontToggle.classList.add('active');
+            fontToggle.title = '일반 글자로 보기';
+            fontToggleText.textContent = '가';
+        } else {
+            body.classList.remove('large-font');
+            fontToggle.classList.remove('active');
+            fontToggle.title = '큰 글자로 보기';
+            fontToggleText.textContent = '가';
+        }
+    }
+
+    function initFontSize() {
+        // URL 파라미터 확인
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLargeFont = urlParams.get('largeFont') === 'true';
+
+        // localStorage 확인
+        const storedLargeFont = localStorage.getItem('largeFont') === 'true';
+
+        // URL 파라미터가 우선순위, 없으면 localStorage 사용
+        isLargeFont = urlLargeFont || storedLargeFont;
+
+        updateFontSize();
+    }
+
+    // 페이지 로드 시 카운트다운 시작 및 폰트 크기 초기화
     document.addEventListener('DOMContentLoaded', () => {
         startIntroCountdown();
+        initFontSize();
     });
 
     // ========== BGM 제어 ==========
