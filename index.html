@@ -35,20 +35,31 @@
 
         /* 큰 폰트 모드 */
         body.large-font {
-            --font-scale: 1.2;
+            --font-scale: 1.25;
         }
 
-        body.large-font * {
-            font-size: calc(1em * var(--font-scale));
-        }
-
-        /* 큰 폰트 모드에서 레이아웃 요소는 폰트 크기 유지 */
-        body.large-font .bgm-toggle,
-        body.large-font .font-toggle,
-        body.large-font svg,
-        body.large-font img,
-        body.large-font .petal {
-            font-size: initial;
+        /* 큰 폰트 모드 - 읽어야 하는 텍스트만 선택적으로 키우기 */
+        body.large-font .wedding-names-main,
+        body.large-font .invitation-text,
+        body.large-font .bible-verse,
+        body.large-font .parents-names,
+        body.large-font .parents-relation,
+        body.large-font .target-name,
+        body.large-font .photo-caption,
+        body.large-font #calendar > div:first-of-type,
+        body.large-font .calendar-table td,
+        body.large-font .calendar-table th,
+        body.large-font .d-day-text,
+        body.large-font .location-info,
+        body.large-font .location-info strong,
+        body.large-font .location-info span,
+        body.large-font #location h3,
+        body.large-font #location p,
+        body.large-font #account p,
+        body.large-font .account-name,
+        body.large-font .account-number,
+        body.large-font .intro-text {
+            font-size: calc(1em * var(--font-scale)) !important;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
